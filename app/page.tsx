@@ -226,39 +226,39 @@ const styles: { [key: string]: React.CSSProperties } = {
     maxWidth: "400px",
     background: "rgba(255,255,255,0.95)",
     borderRadius: "30px",
-    padding: "30px 20px",
+    padding: "22px 16px",
     textAlign: "center",
     boxShadow: "0 25px 70px rgba(0,0,0,0.25)",
     zIndex: 2
   },
 
   emoji: {
-    fontSize: "80px",
+    fontSize: "clamp(60px, 12vw, 80px)",
   },
 
   title: {
-    fontSize: "25px",
+    fontSize: "clamp(20px, 5vw, 25px)",
     fontWeight: "900",
     color: "#4d3800",
     marginBottom: "15px"
   },
 
   text: {
-    fontSize: "18px",
+    fontSize: "clamp(15px, 4vw, 18px)",
     color: "#000000",
     marginBottom: "15px"
   },
 
   termsBox: {
     background: "#fffb012c",
-    padding: "12px",
+    padding: "10px",
     borderRadius: "15px",
-    marginBottom: "20px",
+    marginBottom: "15px",
     border: "1px solid #fffb01"
   },
 
   termsLabel: {
-    fontSize: "16px",
+    fontSize: "15px",
     display: "flex",
     justifyContent: "center",
     gap: "8px",
@@ -267,7 +267,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   button: {
     width: "100%",
-    padding: "18px",
+    padding: "16px",
     borderRadius: "50px",
     border: "none",
     background: "#4d3800",
@@ -278,7 +278,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   warning: {
-    fontSize: "16px",
+    fontSize: "15px",
     color: "#7a7a7a",
     marginTop: "10px",
     height: "16px"
@@ -308,7 +308,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   modalTitle: {
-    fontSize: "18px",
+    fontSize: "15px",
     fontWeight: "900",
     marginBottom: "10px",
     color: "#4d3800"
@@ -316,13 +316,13 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   modalList: {
     textAlign: "left",
-    fontSize: "16px",
+    fontSize: "15px",
     marginBottom: "10px",
     color: "#000000"
   },
 
   modalNote: {
-    fontSize: "16px",
+    fontSize: "15px",
     marginTop: "25px",
     marginBottom: "25px",
     color: "#000000"
