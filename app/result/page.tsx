@@ -261,11 +261,16 @@ export default function Result() {
             <button
               style={{ ...styles.button, background: config.bg }}
               onClick={() => {
-                playClick();
-                sessionStorage.setItem("retry", "true");
-                sessionStorage.removeItem("result");
-                router.push("/game");
-              }}
+              playClick();
+              sessionStorage.setItem("retry", "true");
+              sessionStorage.removeItem("result");
+
+            // RESET PARA SEGUNDO INTENTO
+              sessionStorage.removeItem("sound_shown");
+              sessionStorage.removeItem("confetti_shown");
+
+              router.push("/game");
+            }}
             >
               Volver a intentar
             </button>

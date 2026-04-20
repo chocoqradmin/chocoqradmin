@@ -202,7 +202,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: "clamp(24px, 6vw, 32px)",
     fontWeight: "900",
     color: "#4d3800",
-    marginBottom: "15px"
+    marginBottom: "15px",
+    whiteSpace: "nowrap"
   },
 
   progressBar: {

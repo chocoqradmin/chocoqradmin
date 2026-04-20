@@ -36,7 +36,7 @@ export default function Claim() {
     window.open("https://www.instagram.com/yayato.choco/", "_blank");
     setFollowed(true);
 
-    // 👇 NUEVO: guardar en sesión
+    // NUEVO: guardar en sesión
     sessionStorage.setItem("followed", "true");
   };
 
@@ -44,8 +44,13 @@ export default function Claim() {
     playClick(); // 🔊 sonido
     setRedeemed(true);
 
-    // 👇 NUEVO: guardar en sesión
+    // NUEVO: guardar en sesión
     sessionStorage.setItem("redeemed", "true");
+
+   // IR A GRACIAS DESPUÉS DE 3 SEGUNDOS
+  setTimeout(() => {
+    window.location.href = "/thanks";
+   }, 3000);
   };
 
   return (
@@ -160,7 +165,7 @@ export default function Claim() {
             background: redeemed ? "#00c851" : "#000000"
           }}
         >
-          {redeemed ? "✔ Premio validado" : "Validar premio"}
+          {redeemed ? "✔ Mostrado en caja" : "Mostrar en caja"}
         </motion.button>
 
         <div style={styles.termsBox}>
