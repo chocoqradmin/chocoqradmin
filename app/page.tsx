@@ -8,6 +8,7 @@ export default function Intro() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const router = useRouter();
 
+  // 🔊 SONIDO CLICK (.wav)
   const playClick = () => {
     const audio = new Audio("/sounds/click.wav");
     audio.volume = 0.4;
@@ -17,24 +18,62 @@ export default function Intro() {
   return (
     <div style={styles.container}>
 
+      {/* CHOCOLATE DERRETIDO */}
       <svg style={styles.chocolateTop} viewBox="0 0 100 40" preserveAspectRatio="none">
-        <path d="M0 0 H100 V26 C95 32,92 26,88 26 C85 26,83 30,80 30 C77 30,75 26,72 26 C69 26,67 36,64 36 C61 36,59 24,56 24 C53 24,51 30,48 30 C45 30,43 26,40 26 C37 26,35 36,32 36 C29 36,27 26,24 26 C21 26,19 32,16 32 C13 32,11 24,8 24 C5 24,2 32,0 32 Z" fill="#4d3800"/>
+        <path
+          d="
+            M0 0 
+            H100 
+            V26
+
+            C95 32, 92 26, 88 26
+            C85 26, 83 30, 80 30
+            C77 30, 75 26, 72 26
+            C69 26, 67 36, 64 36
+            C61 36, 59 24, 56 24
+            C53 24, 51 30, 48 30
+            C45 30, 43 26, 40 26
+            C37 26, 35 36, 32 36
+            C29 36, 27 26, 24 26
+            C21 26, 19 32, 16 32
+            C13 32, 11 24, 8 24
+
+            C5 24, 2 32, 0 32
+            Z
+          "
+          fill="#4d3800"
+        />
       </svg>
 
-      <motion.div style={styles.floating1} animate={{ y:[0,-20,0], rotate:[0,10,-10,0] }} transition={{ duration:4, repeat:Infinity }}>🎉</motion.div>
-      <motion.div style={styles.floating2} animate={{ y:[0,15,0], rotate:[0,-10,10,0] }} transition={{ duration:5, repeat:Infinity }}>🎁</motion.div>
+      {/* FLOTANTES */}
+      <motion.div
+        style={styles.floating1}
+        animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0] }}
+        transition={{ duration: 4, repeat: Infinity }}
+      >
+        🎉
+      </motion.div>
 
       <motion.div
-        initial={{ scale:0.8, opacity:0, y:50 }}
-        animate={{ scale:1, opacity:1, y:0 }}
-        transition={{ duration:0.6 }}
+        style={styles.floating2}
+        animate={{ y: [0, 15, 0], rotate: [0, -10, 10, 0] }}
+        transition={{ duration: 5, repeat: Infinity }}
+      >
+        🎁
+      </motion.div>
+
+      {/* CARD */}
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
         style={styles.card}
       >
 
         <motion.div
-          whileTap={{ scale:0.9 }}
-          animate={{ rotate:[0,5,-5,0] }}
-          transition={{ duration:2, repeat:Infinity }}
+          whileTap={{ scale: 0.9 }}
+          animate={{ rotate: [0, 5, -5, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
           style={styles.emoji}
         >
           🍫
@@ -42,8 +81,8 @@ export default function Intro() {
 
         <motion.h1
           style={styles.title}
-          animate={{ opacity:[1,0.92,1] }}
-          transition={{ duration:2.5, repeat:Infinity }}
+          animate={{ opacity: [1, 0.92, 1] }}
+          transition={{ duration: 2.5, repeat: Infinity }}
         >
           JUEGA Y GANA TU PREMIO !
         </motion.h1>
@@ -52,6 +91,7 @@ export default function Intro() {
           Rompe el chocolate y descubre el premio que te espera
         </p>
 
+        {/* CHECKBOX CONTROLADO */}
         <div style={styles.termsBox}>
           <label style={styles.termsLabel}>
             <input
@@ -59,7 +99,7 @@ export default function Intro() {
               checked={accepted}
               onClick={(e) => {
                 e.preventDefault();
-                playClick();
+                playClick(); // 🔊
                 setShowModal(true);
               }}
               readOnly
@@ -71,22 +111,31 @@ export default function Intro() {
         <motion.button
           disabled={!accepted}
           onClick={() => {
-            playClick();
+            playClick(); // 🔊
             router.push("/game");
           }}
-          whileTap={{ scale:0.95 }}
+          whileTap={{ scale: 0.95 }}
           whileHover={{ scale: accepted ? 1.05 : 1 }}
-          style={{ ...styles.button, opacity: accepted ? 1 : 0.5 }}
+          style={{
+            ...styles.button,
+            opacity: accepted ? 1 : 0.5
+          }}
         >
           JUGAR AHORA
         </motion.button>
 
-        <p style={{ ...styles.warning, visibility: accepted ? "hidden" : "visible" }}>
+        <p
+          style={{
+            ...styles.warning,
+            visibility: accepted ? "hidden" : "visible"
+          }}
+        >
           Debes aceptar para continuar
         </p>
 
       </motion.div>
 
+      {/* MODAL */}
       {showModal && (
         <div style={styles.modalOverlay}>
           <div style={styles.modal}>
@@ -118,7 +167,7 @@ export default function Intro() {
             <button
               style={styles.modalButton}
               onClick={() => {
-                playClick();
+                playClick(); // 🔊
                 setAccepted(true);
                 setShowModal(false);
               }}
@@ -135,11 +184,11 @@ export default function Intro() {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    height: "100dvh", // 🔥 fix móvil
+    minHeight: "100dvh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "12px",
+    padding: "20px",
     background: "#fff7e6",
     position: "relative",
     overflow: "hidden"
@@ -150,7 +199,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     top: 0,
     left: 0,
     width: "100%",
-    height: "clamp(100px, 18vh, 200px)",
+    height: "clamp(120px, 20vh, 220px)",
     zIndex: 1
   },
 
@@ -158,7 +207,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     position: "absolute",
     top: "10%",
     left: "10%",
-    fontSize: "clamp(24px,5vw,40px)",
+    fontSize: "40px",
+    opacity: 0.8,
     zIndex: 2
   },
 
@@ -166,75 +216,82 @@ const styles: { [key: string]: React.CSSProperties } = {
     position: "absolute",
     bottom: "10%",
     right: "10%",
-    fontSize: "clamp(24px,5vw,40px)",
+    fontSize: "40px",
+    opacity: 0.8,
     zIndex: 2
   },
 
   card: {
     width: "100%",
     maxWidth: "400px",
-    maxHeight: "92dvh", // 🔥 evita corte
-    overflow: "hidden",
     background: "rgba(255,255,255,0.95)",
     borderRadius: "30px",
-    padding: "20px 16px", // 🔥 ajustado
+    padding: "30px 20px",
     textAlign: "center",
     boxShadow: "0 25px 70px rgba(0,0,0,0.25)",
     zIndex: 2
   },
 
   emoji: {
-    fontSize: "clamp(50px,10vw,80px)",
+    fontSize: "80px",
   },
 
   title: {
-    fontSize: "clamp(18px,4vw,25px)",
+    fontSize: "25px",
     fontWeight: "900",
     color: "#4d3800",
-    marginBottom: "10px"
+    marginBottom: "15px"
   },
 
   text: {
-    fontSize: "clamp(14px,3.5vw,18px)",
-    marginBottom: "12px"
+    fontSize: "18px",
+    color: "#000000",
+    marginBottom: "15px"
   },
 
   termsBox: {
-    padding: "10px",
+    background: "#fffb012c",
+    padding: "12px",
     borderRadius: "15px",
-    marginBottom: "16px",
+    marginBottom: "20px",
     border: "1px solid #fffb01"
   },
 
   termsLabel: {
-    fontSize: "clamp(13px,3vw,16px)",
+    fontSize: "16px",
     display: "flex",
     justifyContent: "center",
-    gap: "8px"
+    gap: "8px",
+    color: "#494949"
   },
 
   button: {
     width: "100%",
-    padding: "14px",
+    padding: "18px",
     borderRadius: "50px",
     border: "none",
     background: "#4d3800",
     color: "#fff",
-    fontSize: "clamp(14px,3.5vw,18px)",
+    fontSize: "18px",
     fontWeight: "bold",
     cursor: "pointer"
   },
 
   warning: {
-    fontSize: "12px",
-    marginTop: "8px",
+    fontSize: "16px",
+    color: "#7a7a7a",
+    marginTop: "10px",
     height: "16px"
   },
 
   modalOverlay: {
     position: "fixed",
-    inset: 0,
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
     background: "rgba(0,0,0,0.5)",
+    backdropFilter: "blur(5px)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -246,25 +303,29 @@ const styles: { [key: string]: React.CSSProperties } = {
     maxWidth: "350px",
     background: "#fff",
     borderRadius: "20px",
-    padding: "20px"
+    padding: "20px",
+    textAlign: "center"
   },
 
   modalTitle: {
-    fontSize: "16px",
+    fontSize: "18px",
     fontWeight: "900",
-    marginBottom: "10px"
+    marginBottom: "10px",
+    color: "#4d3800"
   },
 
   modalList: {
     textAlign: "left",
-    fontSize: "14px",
-    marginBottom: "10px"
+    fontSize: "16px",
+    marginBottom: "10px",
+    color: "#000000"
   },
 
   modalNote: {
-    fontSize: "14px",
-    marginTop: "20px",
-    marginBottom: "20px"
+    fontSize: "16px",
+    marginTop: "25px",
+    marginBottom: "25px",
+    color: "#000000"
   },
 
   modalButton: {
@@ -274,6 +335,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     border: "none",
     background: "#4d3800",
     color: "#fff",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    cursor: "pointer"
   }
 };
