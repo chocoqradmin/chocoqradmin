@@ -12,33 +12,37 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// ✅ Metadata SIN viewport (Next 16)
 export const metadata: Metadata = {
   title: "Juego Chocolate",
   description: "Experiencia promocional",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false, // bloquea zoom
-  },
+};
+
+// ✅ Viewport correcto separado
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body
-        className="min-h-full flex flex-col"
+        className="flex flex-col"
         style={{
-          overflow: "hidden", // sin scroll raro
-          touchAction: "manipulation", // gestos de zoom
-          overscrollBehavior: "none", // rebote
+          height: "100dvh", // 🔥 clave para móviles (evita recortes)
+          overflow: "hidden", // sin scroll (tipo app)
+          touchAction: "manipulation",
+          overscrollBehavior: "none",
         }}
       >
         {children}
