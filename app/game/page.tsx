@@ -8,7 +8,6 @@ export default function Game() {
   const [finished, setFinished] = useState<boolean>(false);
   const router = useRouter();
 
-  // AUDIO PRE-CARGADO
   const breakSound = useRef<HTMLAudioElement | null>(null);
   const lastPlay = useRef(0);
 
@@ -21,14 +20,11 @@ export default function Game() {
 
   const playBreak = () => {
     const now = Date.now();
-
-    // controla spam de audio para evitar lag
     if (now - lastPlay.current < 80) return;
     lastPlay.current = now;
 
     if (!breakSound.current) return;
 
-    // clonar audio para evitar bloqueo del hilo principal
     const sound = breakSound.current.cloneNode(true) as HTMLAudioElement;
     sound.volume = 0.7;
     sound.play().catch(() => {});
@@ -56,44 +52,14 @@ export default function Game() {
 
   const progress = (clicks / 10) * 100;
 
-  const chocolateStates = [
-    "🍫",
-    "🍫",
-    "🍫",
-    "🍫",
-    "🍫",
-    "🎁"
-  ];
-
+  const chocolateStates = ["🍫","🍫","🍫","🍫","🍫","🎁"];
   const breakLevel = Math.floor((clicks / 10) * 5);
 
   return (
     <div style={styles.container}>
 
       <svg style={styles.chocolateTop} viewBox="0 0 100 40" preserveAspectRatio="none">
-        <path
-          d="
-            M0 0 
-            H100 
-            V26
-
-            C95 32, 92 26, 88 26
-            C85 26, 83 30, 80 30
-            C77 30, 75 26, 72 26
-            C69 26, 67 36, 64 36
-            C61 36, 59 24, 56 24
-            C53 24, 51 30, 48 30
-            C45 30, 43 26, 40 26
-            C37 26, 35 36, 32 36
-            C29 36, 27 26, 24 26
-            C21 26, 19 32, 16 32
-            C13 32, 11 24, 8 24
-
-            C5 24, 2 32, 0 32
-            Z
-          "
-          fill="#4d3800"
-        />
+        <path d="M0 0 H100 V26 C95 32, 92 26, 88 26 C85 26, 83 30, 80 30 C77 30, 75 26, 72 26 C69 26, 67 36, 64 36 C61 36, 59 24, 56 24 C53 24, 51 30, 48 30 C45 30, 43 26, 40 26 C37 26, 35 36, 32 36 C29 36, 27 26, 24 26 C21 26, 19 32, 16 32 C13 32, 11 24, 8 24 C5 24, 2 32, 0 32 Z" fill="#4d3800"/>
       </svg>
 
       <motion.div
@@ -114,9 +80,7 @@ export default function Game() {
 
       <div style={styles.card}>
 
-        <h1 style={styles.title}>
-          ROMPE EL CHOCOLATE !
-        </h1>
+        <h1 style={styles.title}>ROMPE EL CHOCOLATE !</h1>
 
         <div style={styles.progressBar}>
           <motion.div
@@ -125,22 +89,41 @@ export default function Game() {
           />
         </div>
 
-        <motion.div
-          onClick={handleClick}
-          whileTap={{ scale: finished ? 1 : 0.85 }}
-          animate={{
-            rotate: clicks > 0 ? [0, 8, -8, 0] : 0,
-            scale: clicks === 10 ? [1, 1.4, 0] : 1,
-          }}
-          transition={{ duration: 0.3 }}
-          style={{
-            ...styles.chocolate,
-            cursor: finished ? "default" : "pointer",
-            filter: "none"
-          }}
-        >
-          {chocolateStates[breakLevel]}
-        </motion.div>
+        {/* WRAPPER RELATIVO SIN CAMBIAR DISEÑO */}
+        <div style={{ position: "relative", display: "inline-block" }}>
+
+          <motion.div
+            whileTap={{ scale: finished ? 1 : 0.85 }}
+            animate={{
+              rotate: clicks > 0 ? [0, 8, -8, 0] : 0,
+              scale: clicks === 10 ? [1, 1.4, 0] : 1,
+            }}
+            transition={{ duration: 0.3 }}
+            style={{
+              ...styles.chocolate,
+              cursor: finished ? "default" : "pointer",
+              filter: "none"
+            }}
+          >
+            {chocolateStates[breakLevel]}
+          </motion.div>
+
+          {/* HITBOX INVISIBLE PERFECTAMENTE CENTRADO */}
+          <div
+            onClick={handleClick}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "260px",
+              height: "260px",
+              cursor: "pointer",
+              zIndex: 5
+            }}
+          />
+
+        </div>
 
         <p style={styles.text}>
           Toca el chocolate y rómpelo
