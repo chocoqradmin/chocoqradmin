@@ -153,7 +153,7 @@ export default function Game() {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    minHeight: "100vh",
+    minHeight: "100dvh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -203,7 +203,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontWeight: "900",
     color: "#4d3800",
     marginBottom: "15px",
-    whiteSpace: "nowrap"
+    whiteSpace: "normal"
   },
 
   progressBar: {
@@ -222,7 +222,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   chocolate: {
-    fontSize: "clamp(200px, 20vw, 130px)",
+    fontSize: "clamp(100px, 30vw, 200px)",
     marginBottom: "20px",
     userSelect: "none"
   },
