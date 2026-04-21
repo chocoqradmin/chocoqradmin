@@ -33,7 +33,7 @@ export default function Claim() {
 
   const handleFollow = () => {
     playClick(); // 🔊 sonido
-    window.open("https://www.instagram.com/yayato.choco/", "_blank");
+    window.location.href = "instagram://user?username=yayato.choco";
     setFollowed(true);
 
     // NUEVO: guardar en sesión
