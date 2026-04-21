@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,14 @@ export default function Thanks() {
 
   const router = useRouter();
 
+  // 🔊 AUDIO SIN RETRASO
+  const clickAudio = useRef<HTMLAudioElement | null>(null);
+
   useEffect(() => {
+
+    clickAudio.current = new Audio("/sounds/click.mp3");
+    clickAudio.current.preload = "auto";
+    clickAudio.current.volume = 0.4;
 
     const confettiShown = sessionStorage.getItem("thanks_confetti");
 
@@ -32,11 +39,17 @@ export default function Thanks() {
 
   }, []);
 
+  const playClick = () => {
+    if (!clickAudio.current) return;
+    clickAudio.current.currentTime = 0;
+    clickAudio.current.play();
+  };
+
   const handleFinish = () => {
-    // limpia toda la sesión
+    playClick(); // 🔥 sonido inmediato
+
     sessionStorage.clear();
 
-    // redirige al inicio
     router.push("/");
   };
 
@@ -112,7 +125,6 @@ export default function Thanks() {
           ¡Te esperamos pronto para más <br /> sorpresas!
         </p>
 
-        {/* BOTÓN FINALIZAR */}
         <motion.button
           onClick={handleFinish}
           whileTap={{ scale: 0.95 }}
