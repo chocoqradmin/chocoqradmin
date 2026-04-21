@@ -12,19 +12,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// ✅ Metadata
 export const metadata: Metadata = {
   title: "Juego Chocolate",
   description: "Experiencia promocional",
 };
 
-// ✅ Viewport (BLOQUEA ZOOM EN CELULAR)
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
+  minimumScale: 1,
   userScalable: false,
-  viewportFit: "cover", // 🔥 evita bordes negros en móviles
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -32,6 +31,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+  // BLOQUEO DE GESTOS (pinch zoom, doble tap)
+  const blockGestures = (e: any) => {
+    if (e.touches && e.touches.length > 1) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <html
       lang="es"
@@ -40,20 +47,24 @@ export default function RootLayout({
         height: "100%",
         margin: 0,
         padding: 0,
-        overflow: "hidden", // 🔥 evita scroll global
+        overflow: "hidden",
       }}
     >
       <body
-        className="flex flex-col"
+        onTouchStart={blockGestures}
+        onTouchMove={blockGestures}
+        onDoubleClick={(e) => e.preventDefault()}
         style={{
-          height: "100dvh", // 🔥 altura real en móviles
-          width: "100vw",   // 🔥 evita espacio negro lateral
+          height: "100dvh",
+          width: "100vw",
           margin: 0,
           padding: 0,
           overflow: "hidden",
-          touchAction: "manipulation",
+          touchAction: "none", // bloquea gestos
           overscrollBehavior: "none",
-          background: "#fff7e6", // 🔥 evita negro al hacer zoom
+          WebkitUserSelect: "none",
+          userSelect: "none",
+          background: "#fff7e6",
         }}
       >
         {children}
