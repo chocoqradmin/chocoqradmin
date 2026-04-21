@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -32,12 +35,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
 
-  // BLOQUEO DE GESTOS (pinch zoom, doble tap)
-  const blockGestures = (e: any) => {
-    if (e.touches && e.touches.length > 1) {
-      e.preventDefault();
-    }
-  };
+  useEffect(() => {
+    // 🔥 BLOQUEAR PINCH ZOOM
+    const preventZoom = (e: TouchEvent) => {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    };
+
+    // 🔥 BLOQUEAR DOBLE TAP ZOOM
+    let lastTouchEnd = 0;
+    const preventDoubleTap = (e: TouchEvent) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    };
+
+    document.addEventListener("touchstart", preventZoom, { passive: false });
+    document.addEventListener("touchmove", preventZoom, { passive: false });
+    document.addEventListener("touchend", preventDoubleTap, false);
+
+    return () => {
+      document.removeEventListener("touchstart", preventZoom);
+      document.removeEventListener("touchmove", preventZoom);
+      document.removeEventListener("touchend", preventDoubleTap);
+    };
+  }, []);
 
   return (
     <html
@@ -51,16 +76,13 @@ export default function RootLayout({
       }}
     >
       <body
-        onTouchStart={blockGestures}
-        onTouchMove={blockGestures}
-        onDoubleClick={(e) => e.preventDefault()}
         style={{
           height: "100dvh",
           width: "100vw",
           margin: 0,
           padding: 0,
           overflow: "hidden",
-          touchAction: "none", // bloquea gestos
+          touchAction: "none",
           overscrollBehavior: "none",
           WebkitUserSelect: "none",
           userSelect: "none",
