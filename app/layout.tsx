@@ -16,15 +16,12 @@ export const metadata: Metadata = {
   title: "ChocoQR",
   description: "Juega, rompe el chocolate y descubre tu premio con ChocoQR",
 
-  // FAVICON CON EMOJI 🍫
+  // 🔥 FAVICON (usa tu imagen)
   icons: {
-    icon: [
-      {
-        url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍫</text></svg>",
-      },
-    ],
+    icon: "/images/choco.avif",
   },
 
+  // 🔥 BLOQUEO DE ZOOM (correcto)
   viewport: {
     width: "device-width",
     initialScale: 1,
@@ -47,7 +44,7 @@ export default function RootLayout({
         className="min-h-full flex flex-col"
         style={{
           overflow: "hidden",
-          touchAction: "manipulation",
+          touchAction: "manipulation", // 🔥 evita doble tap zoom sin romper clicks
           overscrollBehavior: "none",
         }}
       >
