@@ -13,6 +13,27 @@ export default function Game() {
   const breakSound = useRef<HTMLAudioElement | null>(null);
   const lastPlay = useRef(0);
 
+  // 🔥 BLOQUEAR DOBLE TAP ZOOM
+  useEffect(() => {
+    let lastTouch = 0;
+
+    const preventDoubleTap = (e: TouchEvent) => {
+      const now = Date.now();
+      if (now - lastTouch <= 300) {
+        e.preventDefault();
+      }
+      lastTouch = now;
+    };
+
+    document.addEventListener("touchend", preventDoubleTap, {
+      passive: false,
+    });
+
+    return () => {
+      document.removeEventListener("touchend", preventDoubleTap);
+    };
+  }, []);
+
   useEffect(() => {
     const audio = new Audio("/sounds/break.mp3");
     audio.volume = 0.7;
@@ -41,7 +62,7 @@ export default function Game() {
   const shake = async () => {
     await controls.start({
       x: [-12, 12, -10, 10, -6, 6, 0],
-      transition: { duration: 0.35 }
+      transition: { duration: 0.35 },
     });
   };
 
@@ -71,9 +92,15 @@ export default function Game() {
 
   return (
     <div style={styles.container}>
-
-      <svg style={styles.chocolateTop} viewBox="0 0 100 40" preserveAspectRatio="none">
-        <path d="M0 0 H100 V26 C95 32, 92 26, 88 26 C85 26, 83 30, 80 30 C77 30, 75 26, 72 26 C69 26, 67 36, 64 36 C61 36, 59 24, 56 24 C53 24, 51 30, 48 30 C45 30, 43 26, 40 26 C37 26, 35 36, 32 36 C29 36, 27 26, 24 26 C21 26, 19 32, 16 32 C13 32, 11 24, 8 24 C5 24, 2 32, 0 32 Z" fill="#4d3800"/>
+      <svg
+        style={styles.chocolateTop}
+        viewBox="0 0 100 40"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0 0 H100 V26 C95 32, 92 26, 88 26 C85 26, 83 30, 80 30 C77 30, 75 26, 72 26 C69 26, 67 36, 64 36 C61 36, 59 24, 56 24 C53 24, 51 30, 48 30 C45 30, 43 26, 40 26 C37 26, 35 36, 32 36 C29 36, 27 26, 24 26 C21 26, 19 32, 16 32 C13 32, 11 24, 8 24 C5 24, 2 32, 0 32 Z"
+          fill="#4d3800"
+        />
       </svg>
 
       <motion.div
@@ -93,7 +120,6 @@ export default function Game() {
       </motion.div>
 
       <div style={styles.card}>
-
         <h1 style={styles.title}>ROMPE EL CHOCOLATE !</h1>
 
         <div style={styles.progressBar}>
@@ -104,13 +130,11 @@ export default function Game() {
         </div>
 
         <div style={{ position: "relative", display: "inline-block" }}>
-
           <motion.div
             initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-
             <motion.div
               animate={controls}
               whileTap={{ scale: finished ? 1 : 0.92 }}
@@ -133,20 +157,14 @@ export default function Game() {
                 />
               )}
             </motion.div>
-
           </motion.div>
 
           <div onClick={handleClick} style={styles.hitbox} />
-
         </div>
 
-        <p style={styles.text}>
-          Toca el chocolate hasta romperlo
-        </p>
+        <p style={styles.text}>Toca el chocolate hasta romperlo</p>
 
-        <p style={styles.progressText}>
-          {clicks} de 10 golpes
-        </p>
+        <p style={styles.progressText}>{clicks} de 10 golpes</p>
 
         {clicks > 0 && clicks < 10 && (
           <motion.div
@@ -159,7 +177,6 @@ export default function Game() {
             🔨
           </motion.div>
         )}
-
       </div>
     </div>
   );
@@ -174,7 +191,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: "20px",
     background: "#fff7e6",
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   chocolateTop: {
@@ -183,7 +200,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     left: 0,
     width: "100%",
     height: "clamp(120px, 20vh, 220px)",
-    zIndex: 0
+    zIndex: 0,
   },
 
   floating1: {
@@ -191,7 +208,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     top: "10%",
     left: "10%",
     fontSize: "40px",
-    zIndex: 2
+    zIndex: 2,
   },
 
   floating2: {
@@ -199,21 +216,21 @@ const styles: { [key: string]: React.CSSProperties } = {
     bottom: "10%",
     right: "10%",
     fontSize: "40px",
-    zIndex: 2
+    zIndex: 2,
   },
 
   card: {
     width: "100%",
     maxWidth: "420px",
     textAlign: "center",
-    zIndex: 2
+    zIndex: 2,
   },
 
   title: {
     fontSize: "22px",
     fontWeight: "900",
     color: "#4d3800",
-    marginBottom: "15px"
+    marginBottom: "15px",
   },
 
   progressBar: {
@@ -222,27 +239,27 @@ const styles: { [key: string]: React.CSSProperties } = {
     background: "#4d3800",
     borderRadius: "20px",
     overflow: "hidden",
-    marginBottom: "40px"
+    marginBottom: "40px",
   },
 
   progressFill: {
     height: "100%",
     background: "linear-gradient(90deg, gold, orange)",
-    width: "0%"
+    width: "0%",
   },
 
   chocolate: {
     marginBottom: "20px",
-    userSelect: "none"
+    userSelect: "none",
   },
 
-  // 🔥 AJUSTE FINO AQUÍ (ligeramente más grande en móvil)
+  // 🔥 ligeramente más grande en móvil (ajuste fino)
   image: {
     width: "clamp(220px, 58vw, 300px)",
     height: "auto",
     userSelect: "none",
     pointerEvents: "none",
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
 
   hitbox: {
@@ -253,20 +270,20 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: "clamp(220px, 58vw, 300px)",
     height: "clamp(220px, 58vw, 300px)",
     cursor: "pointer",
-    zIndex: 5
+    zIndex: 5,
   },
 
   text: {
     fontSize: "15px",
     color: "#4d3800",
     fontWeight: "700",
-    marginBottom: "10px"
+    marginBottom: "10px",
   },
 
   progressText: {
     fontSize: "15px",
     fontWeight: "900",
-    color: "#4d3800"
+    color: "#4d3800",
   },
 
   particle: {
@@ -274,6 +291,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     top: "40%",
     left: "50%",
     transform: "translateX(-50%)",
-    fontSize: "120px"
-  }
+    fontSize: "120px",
+  },
 };
