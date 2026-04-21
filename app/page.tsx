@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
@@ -8,17 +8,25 @@ export default function Intro() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const router = useRouter();
 
-  // 🔊 SONIDO CLICK (.wav)
-  const playClick = () => {
-    const audio = new Audio("/sounds/click.wav");
+  // AUDIO PRE-CARGADO
+  const clickSound = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const audio = new Audio("/sounds/click.mp3");
     audio.volume = 0.4;
-    audio.play();
+    audio.preload = "auto";
+    clickSound.current = audio;
+  }, []);
+
+  const playClick = () => {
+    if (!clickSound.current) return;
+    clickSound.current.currentTime = 0;
+    clickSound.current.play();
   };
 
   return (
     <div style={styles.container}>
 
-      {/* CHOCOLATE DERRETIDO */}
       <svg style={styles.chocolateTop} viewBox="0 0 100 40" preserveAspectRatio="none">
         <path
           d="
@@ -45,7 +53,6 @@ export default function Intro() {
         />
       </svg>
 
-      {/* FLOTANTES */}
       <motion.div
         style={styles.floating1}
         animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0] }}
@@ -62,7 +69,6 @@ export default function Intro() {
         🎁
       </motion.div>
 
-      {/* CARD */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0, y: 50 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -84,17 +90,16 @@ export default function Intro() {
           animate={{ opacity: [1, 0.92, 1] }}
           transition={{ duration: 2.5, repeat: Infinity }}
         >
-        <>
-          JUEGA Y GANA TU <br />
-          PREMIO !
-        </>
+          <>
+            JUEGA Y GANA TU <br />
+            PREMIO !
+          </>
         </motion.h1>
 
         <p style={styles.text}>
           Rompe el chocolate y descubre el premio que te espera
         </p>
 
-        {/* CHECKBOX CONTROLADO */}
         <div style={styles.termsBox}>
           <label style={styles.termsLabel}>
             <input
@@ -102,7 +107,7 @@ export default function Intro() {
               checked={accepted}
               onClick={(e) => {
                 e.preventDefault();
-                playClick(); // 🔊
+                playClick();
                 setShowModal(true);
               }}
               readOnly
@@ -114,7 +119,7 @@ export default function Intro() {
         <motion.button
           disabled={!accepted}
           onClick={() => {
-            playClick(); // 🔊
+            playClick();
             router.push("/game");
           }}
           whileTap={{ scale: 0.95 }}
@@ -138,7 +143,6 @@ export default function Intro() {
 
       </motion.div>
 
-      {/* MODAL */}
       {showModal && (
         <div style={styles.modalOverlay}>
           <div style={styles.modal}>
@@ -170,7 +174,7 @@ export default function Intro() {
             <button
               style={styles.modalButton}
               onClick={() => {
-                playClick(); // 🔊
+                playClick();
                 setAccepted(true);
                 setShowModal(false);
               }}
