@@ -10,6 +10,7 @@ export default function Game() {
 
   // AUDIO PRE-CARGADO
   const breakSound = useRef<HTMLAudioElement | null>(null);
+  const lastPlay = useRef(0);
 
   useEffect(() => {
     const audio = new Audio("/sounds/break.mp3");
@@ -19,9 +20,18 @@ export default function Game() {
   }, []);
 
   const playBreak = () => {
+    const now = Date.now();
+
+    // controla spam de audio para evitar lag
+    if (now - lastPlay.current < 80) return;
+    lastPlay.current = now;
+
     if (!breakSound.current) return;
-    breakSound.current.currentTime = 0;
-    breakSound.current.play();
+
+    // clonar audio para evitar bloqueo del hilo principal
+    const sound = breakSound.current.cloneNode(true) as HTMLAudioElement;
+    sound.volume = 0.7;
+    sound.play().catch(() => {});
   };
 
   const handleClick = () => {

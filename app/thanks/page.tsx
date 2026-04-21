@@ -1,17 +1,11 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 
 export default function Thanks() {
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
   useEffect(() => {
-
-    audioRef.current = new Audio("/sounds/applause.mp3");
-    audioRef.current.volume = 0.7;
-    audioRef.current.preload = "auto";
 
     const confettiShown = sessionStorage.getItem("thanks_confetti");
 
@@ -31,19 +25,6 @@ export default function Thanks() {
       }, 400);
 
       sessionStorage.setItem("thanks_confetti", "true");
-    }
-
-    const soundPlayed = sessionStorage.getItem("thanks_sound");
-    const audioEnabled = sessionStorage.getItem("audio_enabled");
-
-    if (!soundPlayed && audioEnabled && audioRef.current) {
-      audioRef.current.currentTime = 0;
-
-      setTimeout(() => {
-        audioRef.current?.play().catch(() => {});
-      }, 50);
-
-      sessionStorage.setItem("thanks_sound", "true");
     }
 
   }, []);
