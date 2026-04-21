@@ -199,7 +199,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   chocolateTop: {
     position: "absolute",
-    top: 0,
+    top: -15,
     left: 0,
     width: "100%",
     height: "clamp(120px, 20vh, 220px)",
