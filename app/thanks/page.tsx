@@ -97,9 +97,9 @@ export default function Thanks() {
           Disfruta tu premio
         </p>
 
-        <p style={styles.subtext}>
-          ¡Te esperamos pronto para más sorpresas!
-        </p>
+       <p style={styles.subtext}>
+         ¡Te esperamos pronto para más <br /> sorpresas!
+      </p>
 
       </motion.div>
 
