@@ -26,7 +26,7 @@ const prizeConfig: Record<PrizeType, any> = {
   },
   small_discount: {
     title: "¡DESCUENTO DE $10.000!",
-    emoji: "🙂",
+    emoji: "😊",
     color: "#00d11c",
     bg: "linear-gradient(135deg, #00d11c, #00d11c)"
   },
