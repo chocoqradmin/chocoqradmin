@@ -5,17 +5,14 @@ import confetti from "canvas-confetti";
 
 export default function Thanks() {
 
-  // 🔊 AUDIO PRE-CARGADO (SIN RETRASO)
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
 
-    // 🎧 crear audio una sola vez
     audioRef.current = new Audio("/sounds/applause.mp3");
     audioRef.current.volume = 0.7;
     audioRef.current.preload = "auto";
 
-    // 🎉 CONFETTI SOLO UNA VEZ POR SESIÓN
     const confettiShown = sessionStorage.getItem("thanks_confetti");
 
     if (!confettiShown) {
@@ -36,15 +33,15 @@ export default function Thanks() {
       sessionStorage.setItem("thanks_confetti", "true");
     }
 
-    // 🔊 SONIDO SOLO UNA VEZ POR SESIÓN (SIN DELAY)
     const soundPlayed = sessionStorage.getItem("thanks_sound");
+    const audioEnabled = sessionStorage.getItem("audio_enabled");
 
-    if (!soundPlayed && audioRef.current) {
+    if (!soundPlayed && audioEnabled && audioRef.current) {
       audioRef.current.currentTime = 0;
 
-      audioRef.current.play().catch(() => {
-        // evita error si el navegador bloquea autoplay
-      });
+      setTimeout(() => {
+        audioRef.current?.play().catch(() => {});
+      }, 50);
 
       sessionStorage.setItem("thanks_sound", "true");
     }
@@ -54,7 +51,6 @@ export default function Thanks() {
   return (
     <div style={styles.container}>
 
-      {/* 🍫 MISMO FONDO */}
       <svg style={styles.chocolateTop} viewBox="0 0 100 40" preserveAspectRatio="none">
         <path
           d="
@@ -79,7 +75,6 @@ export default function Thanks() {
         />
       </svg>
 
-      {/* 🎉 FLOTANTES */}
       <motion.div
         style={styles.floating1}
         animate={{ y: [0, -20, 0] }}
@@ -96,7 +91,6 @@ export default function Thanks() {
         🥳
       </motion.div>
 
-      {/* 🎯 CARD */}
       <motion.div
         initial={{ scale: 0.7, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
