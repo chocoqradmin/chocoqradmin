@@ -1,13 +1,14 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 export default function Game() {
   const [clicks, setClicks] = useState<number>(0);
   const [finished, setFinished] = useState<boolean>(false);
-  const [shakeKey, setShakeKey] = useState<number>(0); // clave para animación
   const router = useRouter();
+
+  const controls = useAnimation();
 
   const breakSound = useRef<HTMLAudioElement | null>(null);
   const lastPlay = useRef(0);
@@ -37,12 +38,19 @@ export default function Game() {
     }
   };
 
+  const shake = async () => {
+    await controls.start({
+      x: [-12, 12, -10, 10, -6, 6, 0],
+      transition: { duration: 0.35 }
+    });
+  };
+
   const handleClick = () => {
     if (finished) return;
 
     playBreak();
     vibrate();
-    setShakeKey(prev => prev + 1); // dispara animación
+    shake();
 
     setClicks((prev) => {
       const newClicks = prev + 1;
@@ -86,7 +94,7 @@ export default function Game() {
 
       <div style={styles.card}>
 
-        <h1 style={styles.title}>ROMPE EL CHOCOLATE</h1>
+        <h1 style={styles.title}>ROMPE EL CHOCOLATE !</h1>
 
         <div style={styles.progressBar}>
           <motion.div
@@ -97,22 +105,15 @@ export default function Game() {
 
         <div style={{ position: "relative", display: "inline-block" }}>
 
-          {/* ENTRADA */}
           <motion.div
-            initial={{ scale: 0.6, opacity: 0 }}
+            initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {/* SHAKE REAL */}
+
             <motion.div
-              key={shakeKey}
-              initial={{ x: 0 }}
-              animate={{
-                x: [0, -20, 20, -15, 15, -8, 8, 0],
-                scale: clicks === 10 ? [1, 1.6, 0] : 1,
-              }}
-              transition={{ duration: 0.35 }}
-              whileTap={{ scale: finished ? 1 : 0.9 }}
+              animate={controls}
+              whileTap={{ scale: finished ? 1 : 0.92 }}
               style={{
                 ...styles.chocolate,
                 cursor: finished ? "default" : "pointer",
@@ -120,18 +121,19 @@ export default function Game() {
             >
               {clicks < 10 ? (
                 <img
-                  src="/images/choco.png"
+                  src="/images/choco.avif"
                   style={styles.image}
                   draggable={false}
                 />
               ) : (
                 <img
-                  src="/images/gift.png"
+                  src="/images/gift.avif"
                   style={styles.image}
                   draggable={false}
                 />
               )}
             </motion.div>
+
           </motion.div>
 
           <div onClick={handleClick} style={styles.hitbox} />
@@ -234,8 +236,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     userSelect: "none"
   },
 
+  // 🔥 AJUSTE FINO AQUÍ (ligeramente más grande en móvil)
   image: {
-    width: "clamp(240px, 55vw, 340px)",
+    width: "clamp(220px, 58vw, 300px)",
     height: "auto",
     userSelect: "none",
     pointerEvents: "none",
@@ -247,8 +250,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "clamp(240px, 55vw, 340px)",
-    height: "clamp(240px, 55vw, 340px)",
+    width: "clamp(220px, 58vw, 300px)",
+    height: "clamp(220px, 58vw, 300px)",
     cursor: "pointer",
     zIndex: 5
   },
