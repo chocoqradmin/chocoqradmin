@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -19,7 +22,7 @@ export const metadata: Metadata = {
     width: "device-width",
     initialScale: 1,
     maximumScale: 1,
-    userScalable: false, // bloquea zoom
+    userScalable: false,
   },
 };
 
@@ -28,17 +31,53 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  useEffect(() => {
+    let lastTouchEnd = 0;
+
+    const preventDoubleTap = (e: TouchEvent) => {
+      const now = Date.now();
+
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+
+      lastTouchEnd = now;
+    };
+
+    const preventGesture = (e: Event) => {
+      e.preventDefault();
+    };
+
+    document.addEventListener("touchend", preventDoubleTap, { passive: false });
+    document.addEventListener("gesturestart", preventGesture);
+    document.addEventListener("gesturechange", preventGesture);
+    document.addEventListener("gestureend", preventGesture);
+
+    return () => {
+      document.removeEventListener("touchend", preventDoubleTap);
+      document.removeEventListener("gesturestart", preventGesture);
+      document.removeEventListener("gesturechange", preventGesture);
+      document.removeEventListener("gestureend", preventGesture);
+    };
+  }, []);
+
   return (
     <html
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      style={{
+        height: "100%",
+        overflow: "hidden",
+      }}
     >
       <body
         className="min-h-full flex flex-col"
         style={{
-          overflow: "hidden", // sin scroll raro
-          touchAction: "manipulation", // gestos de zoom
-          overscrollBehavior: "none", // rebote
+          height: "100%",
+          overflow: "hidden",
+          touchAction: "manipulation",
+          overscrollBehavior: "none",
         }}
       >
         {children}
