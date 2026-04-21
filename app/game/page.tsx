@@ -165,7 +165,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   chocolateTop: {
     position: "absolute",
-    top: 0,
+    top: -20,
     left: 0,
     width: "100%",
     height: "clamp(120px, 20vh, 220px)",
@@ -199,11 +199,12 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   title: {
-    fontSize: "clamp(24px, 6vw, 32px)",
+    fontSize: "20px",
+    marginTop: "clamp(20px, 5vh, 60px)",
     fontWeight: "900",
     color: "#4d3800",
     marginBottom: "15px",
-    whiteSpace: "normal"
+    whiteSpace: "nowrap"
   },
 
   progressBar: {
@@ -222,20 +223,20 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   chocolate: {
-    fontSize: "clamp(100px, 30vw, 200px)",
+    fontSize: "clamp(200px, 18vw, 260px)",
     marginBottom: "20px",
     userSelect: "none"
   },
 
   text: {
-    fontSize: "18px",
+    fontSize: "15px",
     color: "#4d3800",
     fontWeight: "700",
     marginBottom: "10px"
   },
 
   progressText: {
-    fontSize: "18px",
+    fontSize: "15px",
     fontWeight: "900",
     color: "#4d3800"
   },

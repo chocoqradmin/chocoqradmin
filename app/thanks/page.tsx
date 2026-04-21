@@ -104,7 +104,13 @@ export default function Thanks() {
           🎁
         </motion.div>
 
-        <h1 style={styles.title}>¡GRACIAS POR PARTICIPAR!</h1>
+        <h1 style={styles.title}>
+
+        <>
+         GRACIAS <br />
+         POR PARTICIPAR
+        </>
+        </h1>
 
         <p style={styles.text}>
           Disfruta tu premio
@@ -122,7 +128,7 @@ export default function Thanks() {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    minHeight: "100vh",
+    minHeight: "100dvh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -134,7 +140,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   chocolateTop: {
     position: "absolute",
-    top: 0,
+    top: -20,
     left: 0,
     width: "100%",
     height: "clamp(120px, 20vh, 220px)",
@@ -174,21 +180,21 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   title: {
-    fontSize: "clamp(22px, 6vw, 28px)",
+    fontSize: "22px",
     fontWeight: "900",
     marginBottom: "15px",
     color: "#4d3800"
   },
 
   text: {
-    fontSize: "18px",
+    fontSize: "15px",
     fontWeight: "900",
     marginBottom: "10px",
     color: "#000000"
   },
 
   subtext: {
-    fontSize: "18px",
+    fontSize: "15px",
     color: "#000000"
   }
 };

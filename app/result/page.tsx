@@ -296,7 +296,7 @@ export default function Result() {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    minHeight: "100vh",
+    minHeight: "100dvh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -308,7 +308,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   chocolateTop: {
     position: "absolute",
-    top: 0,
+    top: -20,
     left: 0,
     width: "100%",
     height: "clamp(120px, 20vh, 220px)",
@@ -354,12 +354,12 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   icon: { fontSize: "70px" },
 
-  title: { fontSize: "25px", fontWeight: "900", marginBottom: "15px" },
+  title: { fontSize: "20px", fontWeight: "900", marginBottom: "15px" },
 
   subtitle: { fontSize: "20px", fontWeight: "900", marginBottom: "15px", color: "#000000" },
 
   prize: {
-    fontSize: "18px",
+    fontSize: "20px",
     marginBottom: "20px",
     color: "#000000"
   },

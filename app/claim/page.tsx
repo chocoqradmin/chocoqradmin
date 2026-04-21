@@ -184,7 +184,7 @@ export default function Claim() {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    minHeight: "100vh",
+    minHeight: "100dvh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -196,7 +196,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   chocolateTop: {
     position: "absolute",
-    top: 0,
+    top: -20,
     left: 0,
     width: "100%",
     height: "clamp(120px, 20vh, 220px)",
@@ -235,20 +235,20 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   title: {
-    fontSize: "25px",
+    fontSize: "20px",
     fontWeight: "900",
     marginBottom: "10px",
     color: "#000000"
   },
 
   subtitle: {
-    fontSize: "14px",
+    fontSize: "12px",
     color: "#000000",
     marginBottom: "10px"
   },
 
   prizeBox: {
-    fontSize: "14px",
+    fontSize: "12px",
     fontWeight: "bold",
     marginBottom: "15px",
     padding: "12px",
@@ -280,7 +280,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   stepText: {
-    fontSize: "14px",
+    fontSize: "12px",
     color: "#000000"
   },
 
@@ -315,14 +315,14 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   termsTitle: {
-    fontSize: "15px",
+    fontSize: "12px",
     fontWeight: "bold",
     marginBottom: "5px",
     color: "#000"
   },
 
   termsList: {
-    paddingLeft: "18px",
+    paddingLeft: "12px",
     margin: 0,
     fontSize: "14px",
     color: "#555",
