@@ -2,8 +2,11 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
+import { useRouter } from "next/navigation";
 
 export default function Thanks() {
+
+  const router = useRouter();
 
   useEffect(() => {
 
@@ -28,6 +31,14 @@ export default function Thanks() {
     }
 
   }, []);
+
+  const handleFinish = () => {
+    // limpia toda la sesión
+    sessionStorage.clear();
+
+    // redirige al inicio
+    router.push("/");
+  };
 
   return (
     <div style={styles.container}>
@@ -87,19 +98,29 @@ export default function Thanks() {
         </motion.div>
 
         <h1 style={styles.title}>
-        <>
-         GRACIAS <br />
-         POR PARTICIPAR
-        </>
+          <>
+            GRACIAS <br />
+            POR PARTICIPAR
+          </>
         </h1>
 
         <p style={styles.text}>
           Disfruta tu premio
         </p>
 
-       <p style={styles.subtext}>
-         ¡Te esperamos pronto para más <br /> sorpresas!
-      </p>
+        <p style={styles.subtext}>
+          ¡Te esperamos pronto para más <br /> sorpresas!
+        </p>
+
+        {/* BOTÓN FINALIZAR */}
+        <motion.button
+          onClick={handleFinish}
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          style={styles.button}
+        >
+          FINALIZAR
+        </motion.button>
 
       </motion.div>
 
@@ -176,6 +197,19 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   subtext: {
     fontSize: "15px",
-    color: "#000000"
+    color: "#000000",
+    marginBottom: "20px"
+  },
+
+  button: {
+    width: "100%",
+    padding: "14px",
+    borderRadius: "50px",
+    border: "none",
+    background: "#4d3800",
+    color: "#fff",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer"
   }
 };

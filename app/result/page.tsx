@@ -63,7 +63,6 @@ export default function Result() {
 
   const router = useRouter();
 
-  // 🔊 AUDIO OPTIMIZADO (SIN RETRASO)
   const winAudio = useRef<HTMLAudioElement | null>(null);
   const loseAudio = useRef<HTMLAudioElement | null>(null);
   const clickAudio = useRef<HTMLAudioElement | null>(null);
@@ -245,8 +244,15 @@ export default function Result() {
           )}
 
           {result!.type === "lose" ? (
-            <button style={{ ...styles.button, background: "#999" }} disabled>
-              Sin premio
+            <button
+              style={{ ...styles.button, background: "#707070" }}
+              onClick={() => {
+                playClick();
+                sessionStorage.clear();
+                router.push("/");
+              }}
+            >
+              FINALIZAR
             </button>
 
           ) : result!.type === "retry" ? (
