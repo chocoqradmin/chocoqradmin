@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,18 +12,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// ✅ Metadata SIN viewport (Next 16)
+// ✅ Metadata
 export const metadata: Metadata = {
   title: "Juego Chocolate",
   description: "Experiencia promocional",
 };
 
-// ✅ Viewport correcto separado
-export const viewport = {
+// ✅ Viewport (BLOQUEA ZOOM EN CELULAR)
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: "cover", // 🔥 evita bordes negros en móviles
 };
 
 export default function RootLayout({
@@ -34,15 +35,25 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      style={{
+        height: "100%",
+        margin: 0,
+        padding: 0,
+        overflow: "hidden", // 🔥 evita scroll global
+      }}
     >
       <body
         className="flex flex-col"
         style={{
-          height: "100dvh", // 🔥 clave para móviles (evita recortes)
-          overflow: "hidden", // sin scroll (tipo app)
+          height: "100dvh", // 🔥 altura real en móviles
+          width: "100vw",   // 🔥 evita espacio negro lateral
+          margin: 0,
+          padding: 0,
+          overflow: "hidden",
           touchAction: "manipulation",
           overscrollBehavior: "none",
+          background: "#fff7e6", // 🔥 evita negro al hacer zoom
         }}
       >
         {children}
