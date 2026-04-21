@@ -30,10 +30,17 @@ export default function Game() {
     sound.play().catch(() => {});
   };
 
+  const vibrate = () => {
+    if (navigator.vibrate) {
+      navigator.vibrate(40);
+    }
+  };
+
   const handleClick = () => {
     if (finished) return;
 
     playBreak();
+    vibrate();
 
     setClicks((prev) => {
       const newClicks = prev + 1;
@@ -51,9 +58,6 @@ export default function Game() {
   };
 
   const progress = (clicks / 10) * 100;
-
-  const chocolateStates = ["🍫","🍫","🍫","🍫","🍫","🎁"];
-  const breakLevel = Math.floor((clicks / 10) * 5);
 
   return (
     <div style={styles.container}>
@@ -80,7 +84,7 @@ export default function Game() {
 
       <div style={styles.card}>
 
-        <h1 style={styles.title}>ROMPE EL CHOCOLATE !</h1>
+        <h1 style={styles.title}>ROMPE EL CHOCOLATE</h1>
 
         <div style={styles.progressBar}>
           <motion.div
@@ -89,44 +93,41 @@ export default function Game() {
           />
         </div>
 
-        {/* WRAPPER RELATIVO SIN CAMBIAR DISEÑO */}
         <div style={{ position: "relative", display: "inline-block" }}>
 
           <motion.div
-            whileTap={{ scale: finished ? 1 : 0.85 }}
+            whileTap={{ scale: finished ? 1 : 0.9 }}
             animate={{
-              rotate: clicks > 0 ? [0, 8, -8, 0] : 0,
-              scale: clicks === 10 ? [1, 1.4, 0] : 1,
+              rotate: clicks > 0 ? [0, 10, -10, 0] : 0,
+              scale: clicks === 10 ? [1, 1.6, 0] : 1,
             }}
             transition={{ duration: 0.3 }}
             style={{
               ...styles.chocolate,
               cursor: finished ? "default" : "pointer",
-              filter: "none"
             }}
           >
-            {chocolateStates[breakLevel]}
+            {clicks < 10 ? (
+              <img
+                src="/images/choco.png"
+                style={styles.image}
+                draggable={false}
+              />
+            ) : (
+              <img
+                src="/images/gift.png"
+                style={styles.image}
+                draggable={false}
+              />
+            )}
           </motion.div>
 
-          {/* HITBOX INVISIBLE PERFECTAMENTE CENTRADO */}
-          <div
-            onClick={handleClick}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "260px",
-              height: "260px",
-              cursor: "pointer",
-              zIndex: 5
-            }}
-          />
+          <div onClick={handleClick} style={styles.hitbox} />
 
         </div>
 
         <p style={styles.text}>
-          Toca el chocolate y rómpelo
+          Toca el chocolate hasta romperlo
         </p>
 
         <p style={styles.progressText}>
@@ -137,7 +138,7 @@ export default function Game() {
           <motion.div
             key={clicks}
             initial={{ y: 0 }}
-            animate={{ opacity: 0, y: -40 }}
+            animate={{ opacity: 0, y: -60 }}
             transition={{ duration: 0.6 }}
             style={styles.particle}
           >
@@ -176,7 +177,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     top: "10%",
     left: "10%",
     fontSize: "40px",
-    opacity: 0.8,
     zIndex: 2
   },
 
@@ -185,25 +185,21 @@ const styles: { [key: string]: React.CSSProperties } = {
     bottom: "10%",
     right: "10%",
     fontSize: "40px",
-    opacity: 0.8,
     zIndex: 2
   },
 
   card: {
     width: "100%",
-    maxWidth: "400px",
+    maxWidth: "420px",
     textAlign: "center",
-    color: "#fff",
     zIndex: 2
   },
 
   title: {
-    fontSize: "20px",
-    marginTop: "clamp(20px, 5vh, 60px)",
+    fontSize: "22px",
     fontWeight: "900",
     color: "#4d3800",
-    marginBottom: "15px",
-    whiteSpace: "nowrap"
+    marginBottom: "15px"
   },
 
   progressBar: {
@@ -212,7 +208,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     background: "#4d3800",
     borderRadius: "20px",
     overflow: "hidden",
-    marginBottom: "20px"
+    marginBottom: "40px"
   },
 
   progressFill: {
@@ -222,9 +218,27 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   chocolate: {
-    fontSize: "clamp(200px, 18vw, 260px)",
     marginBottom: "20px",
     userSelect: "none"
+  },
+
+  image: {
+    width: "clamp(240px, 55vw, 340px)", // AJUSTE CLAVE
+    height: "auto",
+    userSelect: "none",
+    pointerEvents: "none",
+    marginBottom: "20px"
+  },
+
+  hitbox: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "clamp(240px, 55vw, 340px)", // AJUSTE CLAVE
+    height: "clamp(240px, 55vw, 340px)",
+    cursor: "pointer",
+    zIndex: 5
   },
 
   text: {
@@ -245,6 +259,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     top: "40%",
     left: "50%",
     transform: "translateX(-50%)",
-    fontSize: "100px"
+    fontSize: "120px"
   }
 };

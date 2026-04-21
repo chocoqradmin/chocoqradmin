@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* VARIABLES BASE */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -8,7 +7,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* MODO OSCURO */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -16,70 +14,14 @@
   }
 }
 
-/* RESET GENERAL */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* HTML Y BODY BLOQUEADOS COMO APP */
-html,
-body {
-  width: 100%;
-  height: 100%;
-
+html, body {
   background: var(--background);
   color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
 
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-
-  overflow: hidden; /* elimina scroll */
-  touch-action: manipulation; /* mejora taps */
-  overscroll-behavior: none; /* elimina rebote iOS */
-
+  /* CONTROL DE INTERACCIÓN */
+  touch-action: manipulation;
+  overscroll-behavior: none;
   -webkit-user-select: none;
   user-select: none;
-
-  -webkit-touch-callout: none; /* evita menú en iOS */
-  -webkit-tap-highlight-color: transparent; /* elimina flash azul */
-}
-
-/* IMÁGENES Y MEDIA */
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-  user-select: none;
-  pointer-events: none; /* evita arrastres accidentales */
-}
-
-/* BOTONES SIEMPRE INTERACTIVOS */
-button {
-  pointer-events: auto;
-  touch-action: manipulation;
-  cursor: pointer;
-}
-
-/* INPUTS (por si luego usas forms) */
-input,
-textarea {
-  user-select: text; /* permitir escribir */
-  -webkit-user-select: text;
-}
-
-/* LINKS */
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* PREVENIR ZOOM EN INPUTS (iOS) */
-input,
-select,
-textarea {
-  font-size: 16px;
 }
