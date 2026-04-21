@@ -13,13 +13,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Juego Chocolate",
-  description: "Experiencia promocional",
+  title: "ChocoQR",
+  description: "Juega, rompe el chocolate y descubre tu premio con ChocoQR",
+
+  // FAVICON CON EMOJI 🍫
+  icons: {
+    icon: [
+      {
+        url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍫</text></svg>",
+      },
+    ],
+  },
+
   viewport: {
     width: "device-width",
     initialScale: 1,
     maximumScale: 1,
-    userScalable: false, // bloquea zoom
+    userScalable: false,
   },
 };
 
@@ -36,9 +46,9 @@ export default function RootLayout({
       <body
         className="min-h-full flex flex-col"
         style={{
-          overflow: "hidden", // sin scroll raro
-          touchAction: "manipulation", // gestos de zoom
-          overscrollBehavior: "none", // rebote
+          overflow: "hidden",
+          touchAction: "manipulation",
+          overscrollBehavior: "none",
         }}
       >
         {children}
