@@ -199,7 +199,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   chocolateTop: {
     position: "absolute",
-    top: -15,
+    top: -20,
     left: 0,
     width: "100%",
     height: "clamp(120px, 20vh, 220px)",
@@ -311,7 +311,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   modalTitle: {
-    fontSize: "15px",
+    fontSize: "18px",
     fontWeight: "900",
     marginBottom: "10px",
     color: "#4d3800"
