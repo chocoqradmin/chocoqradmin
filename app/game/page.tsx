@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export default function Game() {
   const [clicks, setClicks] = useState<number>(0);
   const [finished, setFinished] = useState<boolean>(false);
+  const [shakeKey, setShakeKey] = useState<number>(0); // clave para animación
   const router = useRouter();
 
   const breakSound = useRef<HTMLAudioElement | null>(null);
@@ -41,6 +42,7 @@ export default function Game() {
 
     playBreak();
     vibrate();
+    setShakeKey(prev => prev + 1); // dispara animación
 
     setClicks((prev) => {
       const newClicks = prev + 1;
@@ -95,19 +97,22 @@ export default function Game() {
 
         <div style={{ position: "relative", display: "inline-block" }}>
 
-          {/* ANIMACIÓN DE ENTRADA */}
+          {/* ENTRADA */}
           <motion.div
             initial={{ scale: 0.6, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.5 }}
           >
+            {/* SHAKE REAL */}
             <motion.div
-              whileTap={{ scale: finished ? 1 : 0.9 }}
+              key={shakeKey}
+              initial={{ x: 0 }}
               animate={{
-                rotate: clicks > 0 ? [0, 10, -10, 0] : 0,
+                x: [0, -20, 20, -15, 15, -8, 8, 0],
                 scale: clicks === 10 ? [1, 1.6, 0] : 1,
               }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.35 }}
+              whileTap={{ scale: finished ? 1 : 0.9 }}
               style={{
                 ...styles.chocolate,
                 cursor: finished ? "default" : "pointer",
