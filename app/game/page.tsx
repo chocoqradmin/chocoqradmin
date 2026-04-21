@@ -95,31 +95,38 @@ export default function Game() {
 
         <div style={{ position: "relative", display: "inline-block" }}>
 
+          {/* ANIMACIÓN DE ENTRADA */}
           <motion.div
-            whileTap={{ scale: finished ? 1 : 0.9 }}
-            animate={{
-              rotate: clicks > 0 ? [0, 10, -10, 0] : 0,
-              scale: clicks === 10 ? [1, 1.6, 0] : 1,
-            }}
-            transition={{ duration: 0.3 }}
-            style={{
-              ...styles.chocolate,
-              cursor: finished ? "default" : "pointer",
-            }}
+            initial={{ scale: 0.6, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            {clicks < 10 ? (
-              <img
-                src="/images/choco.png"
-                style={styles.image}
-                draggable={false}
-              />
-            ) : (
-              <img
-                src="/images/gift.png"
-                style={styles.image}
-                draggable={false}
-              />
-            )}
+            <motion.div
+              whileTap={{ scale: finished ? 1 : 0.9 }}
+              animate={{
+                rotate: clicks > 0 ? [0, 10, -10, 0] : 0,
+                scale: clicks === 10 ? [1, 1.6, 0] : 1,
+              }}
+              transition={{ duration: 0.3 }}
+              style={{
+                ...styles.chocolate,
+                cursor: finished ? "default" : "pointer",
+              }}
+            >
+              {clicks < 10 ? (
+                <img
+                  src="/images/choco.png"
+                  style={styles.image}
+                  draggable={false}
+                />
+              ) : (
+                <img
+                  src="/images/gift.png"
+                  style={styles.image}
+                  draggable={false}
+                />
+              )}
+            </motion.div>
           </motion.div>
 
           <div onClick={handleClick} style={styles.hitbox} />
@@ -223,7 +230,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   image: {
-    width: "clamp(240px, 55vw, 340px)", // AJUSTE CLAVE
+    width: "clamp(240px, 55vw, 340px)",
     height: "auto",
     userSelect: "none",
     pointerEvents: "none",
@@ -235,7 +242,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "clamp(240px, 55vw, 340px)", // AJUSTE CLAVE
+    width: "clamp(240px, 55vw, 340px)",
     height: "clamp(240px, 55vw, 340px)",
     cursor: "pointer",
     zIndex: 5
