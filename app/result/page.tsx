@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
@@ -63,23 +63,40 @@ export default function Result() {
 
   const router = useRouter();
 
-  // 🔊 SONIDOS
+  // 🔊 AUDIO OPTIMIZADO (SIN RETRASO)
+  const winAudio = useRef<HTMLAudioElement | null>(null);
+  const loseAudio = useRef<HTMLAudioElement | null>(null);
+  const clickAudio = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    winAudio.current = new Audio("/sounds/win.mp3");
+    loseAudio.current = new Audio("/sounds/lose.mp3");
+    clickAudio.current = new Audio("/sounds/click.mp3");
+
+    winAudio.current.preload = "auto";
+    loseAudio.current.preload = "auto";
+    clickAudio.current.preload = "auto";
+  }, []);
+
   const playWin = () => {
-    const audio = new Audio("/sounds/win.wav");
-    audio.volume = 0.6;
-    audio.play();
+    if (!winAudio.current) return;
+    winAudio.current.currentTime = 0;
+    winAudio.current.volume = 0.6;
+    winAudio.current.play();
   };
 
   const playLose = () => {
-    const audio = new Audio("/sounds/lose.wav");
-    audio.volume = 0.6;
-    audio.play();
+    if (!loseAudio.current) return;
+    loseAudio.current.currentTime = 0;
+    loseAudio.current.volume = 0.6;
+    loseAudio.current.play();
   };
 
   const playClick = () => {
-    const audio = new Audio("/sounds/click.wav");
-    audio.volume = 0.4;
-    audio.play();
+    if (!clickAudio.current) return;
+    clickAudio.current.currentTime = 0;
+    clickAudio.current.volume = 0.4;
+    clickAudio.current.play();
   };
 
   const getPrize = (): ResultData => {
@@ -128,7 +145,6 @@ export default function Result() {
     setTimeout(() => {
       setShow(true);
 
-      // 🔊 SOLO UNA VEZ POR SESIÓN
       const soundShown = sessionStorage.getItem("sound_shown");
 
       if (!soundShown) {
@@ -168,19 +184,7 @@ export default function Result() {
     return (
       <div style={styles.container}>
         <svg style={styles.chocolateTop} viewBox="0 0 100 40" preserveAspectRatio="none">
-          <path d="M0 0 H100 V26
-            C95 32,92 26,88 26
-            C85 26,83 30,80 30
-            C77 30,75 26,72 26
-            C69 26,67 36,64 36
-            C61 36,59 24,56 24
-            C53 24,51 30,48 30
-            C45 30,43 26,40 26
-            C37 26,35 36,32 36
-            C29 36,27 26,24 26
-            C21 26,19 32,16 32
-            C13 32,11 24,8 24
-            C5 24,2 32,0 32 Z"
+          <path d="M0 0 H100 V26 C95 32,92 26,88 26 C85 26,83 30,80 30 C77 30,75 26,72 26 C69 26,67 36,64 36 C61 36,59 24,56 24 C53 24,51 30,48 30 C45 30,43 26,40 26 C37 26,35 36,32 36 C29 36,27 26,24 26 C21 26,19 32,16 32 C13 32,11 24,8 24 C5 24,2 32,0 32 Z"
             fill="#4d3800"
           />
         </svg>
@@ -202,19 +206,7 @@ export default function Result() {
     <div style={styles.container}>
 
       <svg style={styles.chocolateTop} viewBox="0 0 100 40" preserveAspectRatio="none">
-        <path d="M0 0 H100 V26
-          C95 32,92 26,88 26
-          C85 26,83 30,80 30
-          C77 30,75 26,72 26
-          C69 26,67 36,64 36
-          C61 36,59 24,56 24
-          C53 24,51 30,48 30
-          C45 30,43 26,40 26
-          C37 26,35 36,32 36
-          C29 36,27 26,24 26
-          C21 26,19 32,16 32
-          C13 32,11 24,8 24
-          C5 24,2 32,0 32 Z"
+        <path d="M0 0 H100 V26 C95 32,92 26,88 26 C85 26,83 30,80 30 C77 30,75 26,72 26 C69 26,67 36,64 36 C61 36,59 24,56 24 C53 24,51 30,48 30 C45 30,43 26,40 26 C37 26,35 36,32 36 C29 36,27 26,24 26 C21 26,19 32,16 32 C13 32,11 24,8 24 C5 24,2 32,0 32 Z"
           fill="#4d3800"
         />
       </svg>
@@ -261,16 +253,13 @@ export default function Result() {
             <button
               style={{ ...styles.button, background: config.bg }}
               onClick={() => {
-              playClick();
-              sessionStorage.setItem("retry", "true");
-              sessionStorage.removeItem("result");
-
-            // RESET PARA SEGUNDO INTENTO
-              sessionStorage.removeItem("sound_shown");
-              sessionStorage.removeItem("confetti_shown");
-
-              router.push("/game");
-            }}
+                playClick();
+                sessionStorage.setItem("retry", "true");
+                sessionStorage.removeItem("result");
+                sessionStorage.removeItem("sound_shown");
+                sessionStorage.removeItem("confetti_shown");
+                router.push("/game");
+              }}
             >
               Volver a intentar
             </button>

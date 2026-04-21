@@ -1,11 +1,19 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 
 export default function Thanks() {
 
+  // 🔊 AUDIO PRE-CARGADO (SIN RETRASO)
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   useEffect(() => {
+
+    // 🎧 crear audio una sola vez
+    audioRef.current = new Audio("/sounds/applause.mp3");
+    audioRef.current.volume = 0.7;
+    audioRef.current.preload = "auto";
 
     // 🎉 CONFETTI SOLO UNA VEZ POR SESIÓN
     const confettiShown = sessionStorage.getItem("thanks_confetti");
@@ -28,14 +36,13 @@ export default function Thanks() {
       sessionStorage.setItem("thanks_confetti", "true");
     }
 
-    // 🔊 SONIDO SOLO UNA VEZ POR SESIÓN
+    // 🔊 SONIDO SOLO UNA VEZ POR SESIÓN (SIN DELAY)
     const soundPlayed = sessionStorage.getItem("thanks_sound");
 
-    if (!soundPlayed) {
-      const audio = new Audio("/sounds/applause.mp3");
-      audio.volume = 0.7;
+    if (!soundPlayed && audioRef.current) {
+      audioRef.current.currentTime = 0;
 
-      audio.play().catch(() => {
+      audioRef.current.play().catch(() => {
         // evita error si el navegador bloquea autoplay
       });
 
@@ -105,7 +112,6 @@ export default function Thanks() {
         </motion.div>
 
         <h1 style={styles.title}>
-
         <>
          GRACIAS <br />
          POR PARTICIPAR

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
@@ -8,18 +8,26 @@ export default function Game() {
   const [finished, setFinished] = useState<boolean>(false);
   const router = useRouter();
 
-  // 🔊 SONIDO BREAK
-  const playBreak = () => {
+  // AUDIO PRE-CARGADO
+  const breakSound = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
     const audio = new Audio("/sounds/break.mp3");
     audio.volume = 0.7;
-    audio.currentTime = 0;
-    audio.play();
+    audio.preload = "auto";
+    breakSound.current = audio;
+  }, []);
+
+  const playBreak = () => {
+    if (!breakSound.current) return;
+    breakSound.current.currentTime = 0;
+    breakSound.current.play();
   };
 
   const handleClick = () => {
     if (finished) return;
 
-    playBreak(); // 🔊 SONIDO EN CADA TOQUE
+    playBreak();
 
     setClicks((prev) => {
       const newClicks = prev + 1;
@@ -52,7 +60,6 @@ export default function Game() {
   return (
     <div style={styles.container}>
 
-      {/* 🔥 FONDO CHOCOLATE */}
       <svg style={styles.chocolateTop} viewBox="0 0 100 40" preserveAspectRatio="none">
         <path
           d="
@@ -79,7 +86,6 @@ export default function Game() {
         />
       </svg>
 
-      {/* FLOTANTES */}
       <motion.div
         style={styles.floating1}
         animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0] }}

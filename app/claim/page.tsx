@@ -1,11 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 export default function Claim() {
   const [followed, setFollowed] = useState(false);
   const [redeemed, setRedeemed] = useState(false);
   const [prize, setPrize] = useState<{ name: string }>({ name: "Cargando..." });
+
+  // 🔊 AUDIO OPTIMIZADO
+  const clickAudio = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const savedPrize = localStorage.getItem("prize");
@@ -15,48 +18,57 @@ export default function Claim() {
       setPrize({ name: parsed.prize?.name || "Premio especial" });
     }
 
-    // 👇 NUEVO: recuperar estado de sesión
     const followedSession = sessionStorage.getItem("followed");
     const redeemedSession = sessionStorage.getItem("redeemed");
 
     if (followedSession === "true") setFollowed(true);
     if (redeemedSession === "true") setRedeemed(true);
 
+    // 🔥 PRELOAD AUDIO (SIN RETRASO)
+    clickAudio.current = new Audio("/sounds/click.mp3");
+    clickAudio.current.preload = "auto";
+
   }, []);
 
-  // 🔊 SONIDO CLICK
+  // SONIDO CLICK (OPTIMIZADO)
   const playClick = () => {
-    const audio = new Audio("/sounds/click.wav");
-    audio.volume = 0.4;
-    audio.play();
+    if (!clickAudio.current) return;
+    clickAudio.current.currentTime = 0;
+    clickAudio.current.volume = 0.4;
+    clickAudio.current.play();
   };
 
   const handleFollow = () => {
-    playClick(); // 🔊 sonido
-    window.location.href = "instagram://user?username=yayato.choco";
-    setFollowed(true);
+  playClick();
 
-    // NUEVO: guardar en sesión
-    sessionStorage.setItem("followed", "true");
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    // 📱 abre app directamente
+    window.location.href = "instagram://user?username=yayato.choco";
+  } else {
+    // 💻 abre web en otra pestaña
+    window.open("https://www.instagram.com/yayato.choco/", "_blank");
+  }
+
+  setFollowed(true);
+  sessionStorage.setItem("followed", "true");
   };
 
   const handleRedeem = () => {
-    playClick(); // 🔊 sonido
+    playClick(); // sonido
     setRedeemed(true);
 
-    // NUEVO: guardar en sesión
     sessionStorage.setItem("redeemed", "true");
 
-   // IR A GRACIAS DESPUÉS DE 3 SEGUNDOS
-  setTimeout(() => {
-    window.location.href = "/thanks";
-   }, 3000);
+    setTimeout(() => {
+      window.location.href = "/thanks";
+    }, 3000);
   };
 
   return (
     <div style={styles.container}>
 
-      {/* FONDO CHOCOLATE */}
       <svg style={styles.chocolateTop} viewBox="0 0 100 40" preserveAspectRatio="none">
         <path
           d="
