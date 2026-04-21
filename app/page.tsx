@@ -237,7 +237,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   title: {
-    fontSize: "clamp(20px, 5vw, 25px)",
+    fontSize: "clamp(22px, 5vw, 25px)",
     fontWeight: "900",
     color: "#4d3800",
     marginBottom: "15px"
