@@ -84,7 +84,10 @@ export default function Intro() {
           animate={{ opacity: [1, 0.92, 1] }}
           transition={{ duration: 2.5, repeat: Infinity }}
         >
-          JUEGA Y GANA TU PREMIO !
+        <>
+          JUEGA Y GANA TU <br />
+          PREMIO !
+        </>
         </motion.h1>
 
         <p style={styles.text}>
@@ -237,7 +240,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   title: {
-    fontSize: "clamp(22px, 5vw, 25px)",
+    fontSize: "clamp(20px, 5vw, 25px)",
     fontWeight: "900",
     color: "#4d3800",
     marginBottom: "15px"
