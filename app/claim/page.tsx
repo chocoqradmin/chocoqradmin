@@ -45,10 +45,10 @@ export default function Claim() {
 
   if (isMobile) {
     // 📱 abre app directamente
-    window.location.href = "instagram://user?username=yayato.choco";
+    window.location.href = "instagram://user?username=rancheros.llanos";
   } else {
     // 💻 abre web en otra pestaña
-    window.open("https://www.instagram.com/yayato.choco/", "_blank");
+    window.open("https://www.instagram.com/rancheros.llanos/", "_blank");
   }
 
   setFollowed(true);
@@ -63,7 +63,7 @@ export default function Claim() {
 
     setTimeout(() => {
       window.location.href = "/thanks";
-    }, 3000);
+    }, 1000);
   };
 
   return (

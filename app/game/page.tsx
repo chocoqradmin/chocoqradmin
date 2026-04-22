@@ -61,7 +61,6 @@ export default function Game() {
     });
   };
 
-  // 🔥 PARTÍCULAS REALES
   const spawnCrumbs = () => {
     const newCrumbs = Array.from({ length: 8 }).map(() => ({
       id: Math.random(),
@@ -175,7 +174,6 @@ export default function Game() {
 
           <div onClick={handleClick} style={styles.hitbox} />
 
-          {/* 🔥 MIGAS */}
           {crumbs.map((crumb) => (
             <motion.img
               key={crumb.id}
@@ -288,8 +286,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     userSelect: "none"
   },
 
+  // 🔥 MÁS GRANDE EN CELULAR
   image: {
-    width: "clamp(220px, 58vw, 300px)",
+    width: "clamp(260px, 70vw, 300px)",
     height: "auto",
     userSelect: "none",
     pointerEvents: "none",
@@ -301,8 +300,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "clamp(220px, 58vw, 300px)",
-    height: "clamp(220px, 58vw, 300px)",
+    width: "clamp(260px, 70vw, 300px)",
+    height: "clamp(260px, 70vw, 300px)",
     cursor: "pointer",
     zIndex: 5
   },
