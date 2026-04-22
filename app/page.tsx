@@ -9,6 +9,7 @@ export default function Intro() {
   const router = useRouter();
 
   const clickSound = useRef<HTMLAudioElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null); 
 
   useEffect(() => {
     const audio = new Audio("/sounds/click.mp3");
@@ -16,6 +17,22 @@ export default function Intro() {
     audio.preload = "auto";
     clickSound.current = audio;
   }, []);
+
+  // AUTO SCROLL DEMO (BAJA Y SUBE)
+  useEffect(() => {
+    if (showModal && scrollRef.current) {
+      const el = scrollRef.current;
+
+      setTimeout(() => {
+        el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+
+        setTimeout(() => {
+          el.scrollTo({ top: 0, behavior: "smooth" });
+        }, 700);
+
+      }, 200);
+    }
+  }, [showModal]);
 
   const playClick = () => {
     if (!clickSound.current) return;
@@ -140,7 +157,8 @@ export default function Intro() {
         <div style={styles.modalOverlay}>
           <div style={styles.modal}>
 
-            <div style={styles.modalContent}>
+            <div ref={scrollRef} style={styles.modalContent}>
+              {/* AQUÍ SE APLICA EL SCROLL */}
 
               <h3 style={styles.modalTitle}>Condiciones</h3>
 
@@ -189,7 +207,7 @@ export default function Intro() {
         </div>
       )}
 
-      {/* 🔥 SCROLL CAFÉ */}
+      {/* SCROLL CAFÉ */}
       <style jsx global>{`
         ::-webkit-scrollbar {
           width: 6px;

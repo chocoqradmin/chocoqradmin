@@ -264,6 +264,7 @@ export default function Result() {
                 sessionStorage.removeItem("result");
                 sessionStorage.removeItem("sound_shown");
                 sessionStorage.removeItem("confetti_shown");
+                sessionStorage.removeItem("maxClicks"); // 🔥 agregado
                 router.push("/game");
               }}
             >
