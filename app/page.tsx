@@ -8,7 +8,6 @@ export default function Intro() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const router = useRouter();
 
-  // AUDIO PRE-CARGADO
   const clickSound = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -29,11 +28,7 @@ export default function Intro() {
 
       <svg style={styles.chocolateTop} viewBox="0 0 100 40" preserveAspectRatio="none">
         <path
-          d="
-            M0 0 
-            H100 
-            V26
-
+          d="M0 0 H100 V26
             C95 32, 92 26, 88 26
             C85 26, 83 30, 80 30
             C77 30, 75 26, 72 26
@@ -45,10 +40,7 @@ export default function Intro() {
             C29 36, 27 26, 24 26
             C21 26, 19 32, 16 32
             C13 32, 11 24, 8 24
-
-            C5 24, 2 32, 0 32
-            Z
-          "
+            C5 24, 2 32, 0 32 Z"
           fill="#4d3800"
         />
       </svg>
@@ -111,8 +103,9 @@ export default function Intro() {
                 setShowModal(true);
               }}
               readOnly
+              style={styles.checkbox}
             />
-            Acepto términos y condiciones
+            <span>Acepto términos y condiciones</span>
           </label>
         </div>
 
@@ -147,7 +140,6 @@ export default function Intro() {
         <div style={styles.modalOverlay}>
           <div style={styles.modal}>
 
-            {/* SCROLLABLE CONTENT */}
             <div style={styles.modalContent}>
 
               <h3 style={styles.modalTitle}>Condiciones</h3>
@@ -182,7 +174,6 @@ export default function Intro() {
 
             </div>
 
-            {/* BOTÓN FIJO */}
             <button
               style={styles.modalButton}
               onClick={() => {
@@ -197,6 +188,24 @@ export default function Intro() {
           </div>
         </div>
       )}
+
+      {/* 🔥 SCROLL CAFÉ */}
+      <style jsx global>{`
+        ::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #e6d3a3;
+          border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #4d3800;
+          border-radius: 10px;
+        }
+      `}</style>
+
     </div>
   );
 }
@@ -279,9 +288,17 @@ const styles: { [key: string]: React.CSSProperties } = {
   termsLabel: {
     fontSize: "15px",
     display: "flex",
+    alignItems: "center",
     justifyContent: "center",
-    gap: "8px",
+    gap: "10px",
     color: "#494949"
+  },
+
+  checkbox: {
+    width: "18px",
+    height: "18px",
+    accentColor: "#4d3800",
+    cursor: "pointer"
   },
 
   button: {
@@ -331,7 +348,9 @@ const styles: { [key: string]: React.CSSProperties } = {
   modalContent: {
     padding: "20px",
     overflowY: "auto",
-    flex: 1
+    flex: 1,
+    scrollbarColor: "#4d3800 #e6d3a3",
+    scrollbarWidth: "thin"
   },
 
   modalTitle: {
