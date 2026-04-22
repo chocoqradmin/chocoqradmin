@@ -147,30 +147,42 @@ export default function Intro() {
         <div style={styles.modalOverlay}>
           <div style={styles.modal}>
 
-            <h3 style={styles.modalTitle}>Condiciones</h3>
+            {/* SCROLLABLE CONTENT */}
+            <div style={styles.modalContent}>
 
-            <ul style={styles.modalList}>
-              <li>• Juega solo en el punto</li>
-              <li>• 1 intento por persona</li>
-              <li>• +1 intento por compra</li>
-              <li>• Max 2 intentos por persona</li>
-              <li>• Resultado aleatorio</li>
-              <li>• Premios con condiciones</li>
-              <li>• No canjeable por dinero</li>
-              <li>• No acumulable</li>
-            </ul>
+              <h3 style={styles.modalTitle}>Condiciones</h3>
 
-            <h3 style={styles.modalTitle}>Términos</h3>
+              <ul style={styles.modalList}>
+                <li>• Juega solo en el punto</li>
+                <li>• 1 intento por persona</li>
+                <li>• +1 intento por compra</li>
+                <li>• Máx. 2 intentos por persona</li>
+                <li>• Resultado aleatorio</li>
+                <li>• Premios con condiciones</li>
+                <li>• No canjeable por dinero</li>
+                <li>• No acumulable</li>
+                <li>• Premios sujetos a disponibilidad</li>
+                <li>• El premio debe validarse en el punto de atención</li>
+                <li>• Redención válida únicamente el día de la participación</li>
+              </ul>
 
-            <ul style={styles.modalList}>
-              <li>• Participar implica aceptar términos</li>
-              <li>• Es una Actividad promocional</li>
-            </ul>
+              <h3 style={styles.modalTitle}>Términos</h3>
 
-            <p style={styles.modalNote}>
-              Puede ser grabado con fines promocionales
-            </p>
+              <ul style={styles.modalList}>
+                <li>• Participar implica aceptar términos</li>
+                <li>• Es una actividad promocional</li>
+                <li>• La organización podrá verificar participaciones duplicadas</li>
+                <li>• Cualquier intento de manipulación anula la participación</li>
+                <li>• En caso de fallas técnicas, la dinámica podrá ser ajustada</li>
+              </ul>
 
+              <p style={styles.modalNote}>
+                🎥 Puede ser grabado con fines promocionales
+              </p>
+
+            </div>
+
+            {/* BOTÓN FIJO */}
             <button
               style={styles.modalButton}
               onClick={() => {
@@ -308,14 +320,23 @@ const styles: { [key: string]: React.CSSProperties } = {
   modal: {
     width: "90%",
     maxWidth: "350px",
+    height: "500px",
     background: "#fff",
     borderRadius: "20px",
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden"
+  },
+
+  modalContent: {
     padding: "20px",
-    textAlign: "center"
+    overflowY: "auto",
+    flex: 1
   },
 
   modalTitle: {
     fontSize: "18px",
+    textAlign: "center",
     fontWeight: "900",
     marginBottom: "10px",
     color: "#4d3800"
@@ -330,6 +351,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   modalNote: {
     fontSize: "15px",
+    textAlign: "center",
     marginTop: "25px",
     marginBottom: "25px",
     color: "#000000"
@@ -337,8 +359,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   modalButton: {
     width: "100%",
-    padding: "14px",
-    borderRadius: "50px",
+    padding: "15px",
     border: "none",
     background: "#4d3800",
     color: "#fff",

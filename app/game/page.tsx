@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 export default function Game() {
   const [clicks, setClicks] = useState<number>(0);
   const [finished, setFinished] = useState<boolean>(false);
+  const [maxClicks, setMaxClicks] = useState<number>(10);
+  const [crumbs, setCrumbs] = useState<any[]>([]);
   const router = useRouter();
 
   const controls = useAnimation();
@@ -18,6 +20,16 @@ export default function Game() {
     audio.volume = 0.7;
     audio.preload = "auto";
     breakSound.current = audio;
+
+    const storedClicks = sessionStorage.getItem("maxClicks");
+
+    if (storedClicks) {
+      setMaxClicks(parseInt(storedClicks));
+    } else {
+      const randomClicks = Math.floor(Math.random() * 3) + 3;
+      sessionStorage.setItem("maxClicks", String(randomClicks));
+      setMaxClicks(randomClicks);
+    }
   }, []);
 
   const playBreak = () => {
@@ -29,6 +41,7 @@ export default function Game() {
 
     const sound = breakSound.current.cloneNode(true) as HTMLAudioElement;
     sound.volume = 0.7;
+    sound.playbackRate = 0.9 + Math.random() * 0.2;
     sound.play().catch(() => {});
   };
 
@@ -38,11 +51,31 @@ export default function Game() {
     }
   };
 
-  const shake = async () => {
-    await controls.start({
-      x: [-12, 12, -10, 10, -6, 6, 0],
-      transition: { duration: 0.35 }
+  const shake = () => {
+    controls.start({
+      scale: [1, 0.88, 1.04, 0.97, 1],
+      transition: {
+        duration: 0.22,
+        ease: "easeOut"
+      }
     });
+  };
+
+  // 🔥 PARTÍCULAS REALES
+  const spawnCrumbs = () => {
+    const newCrumbs = Array.from({ length: 8 }).map(() => ({
+      id: Math.random(),
+      x: (Math.random() - 0.5) * 140,
+      y: (Math.random() - 0.5) * 140,
+      rotate: Math.random() * 360,
+      scale: 0.6 + Math.random() * 0.6
+    }));
+
+    setCrumbs((prev) => [...prev, ...newCrumbs]);
+
+    setTimeout(() => {
+      setCrumbs((prev) => prev.slice(newCrumbs.length));
+    }, 500);
   };
 
   const handleClick = () => {
@@ -51,11 +84,12 @@ export default function Game() {
     playBreak();
     vibrate();
     shake();
+    spawnCrumbs();
 
     setClicks((prev) => {
       const newClicks = prev + 1;
 
-      if (newClicks === 10) {
+      if (newClicks === maxClicks) {
         setFinished(true);
 
         setTimeout(() => {
@@ -66,8 +100,6 @@ export default function Game() {
       return newClicks;
     });
   };
-
-  const progress = (clicks / 10) * 100;
 
   return (
     <div style={styles.container}>
@@ -97,10 +129,15 @@ export default function Game() {
         <h1 style={styles.title}>ROMPE EL CHOCOLATE !</h1>
 
         <div style={styles.progressBar}>
-          <motion.div
-            style={styles.progressFill}
-            animate={{ width: `${progress}%` }}
-          />
+          {clicks > 0 && (
+            <motion.div
+              key={clicks}
+              style={styles.progressFill}
+              initial={{ width: "0%" }}
+              animate={{ width: ["0%", "100%", "0%"] }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            />
+          )}
         </div>
 
         <div style={{ position: "relative", display: "inline-block" }}>
@@ -113,21 +150,21 @@ export default function Game() {
 
             <motion.div
               animate={controls}
-              whileTap={{ scale: finished ? 1 : 0.92 }}
+              whileTap={{ scale: finished ? 1 : 0.95 }}
               style={{
                 ...styles.chocolate,
                 cursor: finished ? "default" : "pointer",
               }}
             >
-              {clicks < 10 ? (
+              {clicks < maxClicks ? (
                 <img
-                  src="/images/choco.avif"
+                  src="/images/choco.png"
                   style={styles.image}
                   draggable={false}
                 />
               ) : (
                 <img
-                  src="/images/gift.avif"
+                  src="/images/gift.png"
                   style={styles.image}
                   draggable={false}
                 />
@@ -138,19 +175,34 @@ export default function Game() {
 
           <div onClick={handleClick} style={styles.hitbox} />
 
+          {/* 🔥 MIGAS */}
+          {crumbs.map((crumb) => (
+            <motion.img
+              key={crumb.id}
+              src="/images/parti.png"
+              initial={{ x: 0, y: 0, opacity: 1, scale: crumb.scale }}
+              animate={{
+                x: crumb.x,
+                y: crumb.y,
+                rotate: crumb.rotate
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                width: "12px",
+                pointerEvents: "none",
+                transform: "translate(-50%, -50%)"
+              }}
+            />
+          ))}
+
         </div>
 
-        <p style={styles.text}>
-          Toca el chocolate hasta romperlo
-        </p>
-
-        <p style={styles.progressText}>
-          {clicks} de 10 golpes
-        </p>
-
-        {clicks > 0 && clicks < 10 && (
+        {clicks > 0 && clicks < maxClicks && (
           <motion.div
-            key={clicks}
+            key={clicks + "particle"}
             initial={{ y: 0 }}
             animate={{ opacity: 0, y: -60 }}
             transition={{ duration: 0.6 }}
@@ -236,7 +288,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     userSelect: "none"
   },
 
-  // 🔥 AJUSTE FINO AQUÍ (ligeramente más grande en móvil)
   image: {
     width: "clamp(220px, 58vw, 300px)",
     height: "auto",
@@ -254,19 +305,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     height: "clamp(220px, 58vw, 300px)",
     cursor: "pointer",
     zIndex: 5
-  },
-
-  text: {
-    fontSize: "15px",
-    color: "#4d3800",
-    fontWeight: "700",
-    marginBottom: "10px"
-  },
-
-  progressText: {
-    fontSize: "15px",
-    fontWeight: "900",
-    color: "#4d3800"
   },
 
   particle: {
