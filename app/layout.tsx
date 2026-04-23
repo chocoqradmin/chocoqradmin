@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ChocoQR",
-  description: "Juega, rompe el chocolate y descubre tu premio con ChocoQR",
+  title: "ChocoPremio",
+  description: "Juega, rompe el chocolate y descubre tu premio con ChocoPremio",
 
   // 🍫 FAVICONS COMPLETOS
   icons: {
