@@ -16,9 +16,15 @@ export const metadata: Metadata = {
   title: "ChocoQR",
   description: "Juega, rompe el chocolate y descubre tu premio con ChocoQR",
 
-  // FAVICON CORRECTO
+  // 🍫 FAVICONS COMPLETOS
   icons: {
-    icon: "/images/favicon.png", // 👈 tu favicon de 96x96
+    icon: [
+      { url: "/favicons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicons/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    shortcut: "/favicons/favicon.ico",
+    apple: "/favicons/apple-icon-180x180.png",
   },
 };
 
