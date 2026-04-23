@@ -50,7 +50,7 @@ export default function Thanks() {
 
     sessionStorage.clear();
 
-    router.push("/");
+    router.push("/end");
   };
 
   return (

@@ -249,7 +249,7 @@ export default function Result() {
               onClick={() => {
                 playClick();
                 sessionStorage.clear();
-                router.push("/");
+                router.push("/end");
               }}
             >
               FINALIZAR
