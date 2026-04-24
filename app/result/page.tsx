@@ -268,7 +268,7 @@ export default function Result() {
                 router.push("/game");
               }}
             >
-              Volver a intentar
+              VOLVER A INTENTAR
             </button>
 
           ) : (
@@ -280,7 +280,7 @@ export default function Result() {
                 router.push("/claim");
               }}
             >
-              Reclamar premio
+              RECLAMAR PREMIO
             </button>
           )}
 

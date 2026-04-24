@@ -7,7 +7,6 @@ export default function Claim() {
   const [redeemed, setRedeemed] = useState(false);
   const [prize, setPrize] = useState<{ name: string }>({ name: "Cargando..." });
 
-  // 🔊 AUDIO OPTIMIZADO
   const clickAudio = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -24,13 +23,10 @@ export default function Claim() {
     if (followedSession === "true") setFollowed(true);
     if (redeemedSession === "true") setRedeemed(true);
 
-    // 🔥 PRELOAD AUDIO (SIN RETRASO)
     clickAudio.current = new Audio("/sounds/click.mp3");
     clickAudio.current.preload = "auto";
-
   }, []);
 
-  // SONIDO CLICK (OPTIMIZADO)
   const playClick = () => {
     if (!clickAudio.current) return;
     clickAudio.current.currentTime = 0;
@@ -39,31 +35,29 @@ export default function Claim() {
   };
 
   const handleFollow = () => {
-  playClick();
+    playClick();
 
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  if (isMobile) {
-    // 📱 abre app directamente
-    window.location.href = "instagram://user?username=rancheros.llanos";
-  } else {
-    // 💻 abre web en otra pestaña
-    window.open("https://www.instagram.com/rancheros.llanos/", "_blank");
-  }
+    if (isMobile) {
+      window.location.href = "instagram://user?username=rancheros.llanos";
+    } else {
+      window.open("https://www.instagram.com/rancheros.llanos/", "_blank");
+    }
 
-  setFollowed(true);
-  sessionStorage.setItem("followed", "true");
+    setFollowed(true);
+    sessionStorage.setItem("followed", "true");
   };
 
   const handleRedeem = () => {
-    playClick(); // sonido
+    playClick();
     setRedeemed(true);
-
     sessionStorage.setItem("redeemed", "true");
+  };
 
-    setTimeout(() => {
-      window.location.href = "/thanks";
-    }, 1000);
+  const handleContinue = () => {
+    playClick();
+    window.location.href = "/thanks";
   };
 
   return (
@@ -75,7 +69,6 @@ export default function Claim() {
             M0 0 
             H100 
             V26
-
             C95 32, 92 26, 88 26
             C85 26, 83 30, 80 30
             C77 30, 75 26, 72 26
@@ -87,7 +80,6 @@ export default function Claim() {
             C29 36, 27 26, 24 26
             C21 26, 19 32, 16 32
             C13 32, 11 24, 8 24
-
             C5 24, 2 32, 0 32
             Z
           "
@@ -167,17 +159,30 @@ export default function Claim() {
         </div>
 
         <motion.button
-          disabled={!followed || redeemed}
+          // 🔥 SOLO CAMBIO: ya no está disabled
           whileTap={{ scale: 0.95 }}
-          whileHover={{ scale: followed ? 1.05 : 1 }}
+          whileHover={{ scale: 1.05 }}
           onClick={handleRedeem}
           style={{
             ...styles.claimButton,
-            opacity: followed ? 1 : 0.5,
             background: redeemed ? "#00c851" : "#000000"
           }}
         >
           {redeemed ? "✔ Mostrado en caja" : "Mostrar en caja"}
+        </motion.button>
+
+        <motion.button
+          // 🔥 SOLO CAMBIO: depende de ambos
+          disabled={!(followed && redeemed)}
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: followed && redeemed ? 1.05 : 1 }}
+          onClick={handleContinue}
+          style={{
+            ...styles.finalButton,
+            opacity: followed && redeemed ? 1 : 0.5
+          }}
+        >
+          CONTINUAR
         </motion.button>
 
         <div style={styles.termsBox}>
@@ -203,7 +208,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     background: "#fff7e6",
     position: "relative",
     padding: "20px",
-    overflow: "hidden" 
+    overflow: "hidden"
   },
 
   chocolateTop: {
@@ -316,6 +321,20 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontWeight: "bold",
     marginBottom: "10px",
     cursor: "pointer"
+  },
+
+  finalButton: {
+    width: "100%",
+    padding: "10px",
+    borderRadius: "50px",
+    border: "none",
+    background: "#4d3800",
+    color: "#fff",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    marginBottom: "10px",
+    marginTop: "15px"
   },
 
   termsBox: {

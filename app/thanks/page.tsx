@@ -8,8 +8,9 @@ export default function Thanks() {
 
   const router = useRouter();
 
-  // 🔊 AUDIO SIN RETRASO
+  // 🔊 AUDIOS SIN RETRASO
   const clickAudio = useRef<HTMLAudioElement | null>(null);
+  const winAudio = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
 
@@ -17,10 +18,22 @@ export default function Thanks() {
     clickAudio.current.preload = "auto";
     clickAudio.current.volume = 0.4;
 
+    // 🔥 SONIDO WIN
+    winAudio.current = new Audio("/sounds/win.mp3");
+    winAudio.current.preload = "auto";
+    winAudio.current.volume = 0.5;
+
     const confettiShown = sessionStorage.getItem("thanks_confetti");
 
     if (!confettiShown) {
       setTimeout(() => {
+
+        // 🔥 SONIDO + CONFETTI JUNTOS
+        if (winAudio.current) {
+          winAudio.current.currentTime = 0;
+          winAudio.current.play();
+        }
+
         confetti({
           particleCount: 150,
           spread: 100,
@@ -46,11 +59,15 @@ export default function Thanks() {
   };
 
   const handleFinish = () => {
-    playClick(); // 🔥 sonido inmediato
-
+    playClick();
     sessionStorage.clear();
-
     router.push("/end");
+  };
+
+  // 🔁 VOLVER A CLAIM
+  const handleBackToClaim = () => {
+    playClick();
+    router.push("/claim");
   };
 
   return (
@@ -134,6 +151,16 @@ export default function Thanks() {
           FINALIZAR
         </motion.button>
 
+        {/* 🔥 BOTÓN SECUNDARIO */}
+        <motion.button
+          onClick={handleBackToClaim}
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          style={styles.secondaryButton}
+        >
+          Ver premio
+        </motion.button>
+
       </motion.div>
 
     </div>
@@ -215,12 +242,26 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   button: {
     width: "100%",
-    padding: "14px",
+    padding: "12px",
     borderRadius: "50px",
     border: "none",
     background: "#4d3800",
     color: "#fff",
     fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    marginBottom: "10px"
+  },
+
+  // 🔥 BOTÓN SECUNDARIO PRO
+  secondaryButton: {
+    width: "100%",
+    padding: "12px",
+    borderRadius: "50px",
+    border: "2px solid #4d3800",
+    background: "transparent",
+    color: "#4d3800",
+    fontSize: "14px",
     fontWeight: "bold",
     cursor: "pointer"
   }
