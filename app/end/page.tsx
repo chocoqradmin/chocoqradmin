@@ -7,6 +7,21 @@ export default function End() {
   useEffect(() => {
     // 🔥 limpia sesión automáticamente al entrar
     sessionStorage.clear();
+    localStorage.removeItem("prize");
+
+    // 🔥 evita volver atrás con datos (bloquea historial útil)
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+      window.history.go(1);
+    };
+
+    // 🔥 evita cache (cuando regresan no carga estado anterior)
+    window.addEventListener("pageshow", (event) => {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+
   }, []);
 
   return (

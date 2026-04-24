@@ -175,7 +175,7 @@ export default function Claim() {
           // 🔥 SOLO CAMBIO: depende de ambos
           disabled={!(followed && redeemed)}
           whileTap={{ scale: 0.95 }}
-          whileHover={{ scale: followed && redeemed ? 1.05 : 1 }}
+          whileHover={{ scale: 1 }}
           onClick={handleContinue}
           style={{
             ...styles.finalButton,
@@ -239,7 +239,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   card: {
     width: "100%",
     maxWidth: "400px",
-    background: "rgba(255,255,255,0.95)",
+    background: "rgba(255,255,255,0.9)",
     borderRadius: "30px",
     padding: "30px",
     textAlign: "center",
