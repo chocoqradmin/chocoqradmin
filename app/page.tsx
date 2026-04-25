@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 export default function Intro() {
   const [accepted, setAccepted] = useState<boolean>(false);
+  const [followed, setFollowed] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const router = useRouter();
 
@@ -16,9 +17,11 @@ export default function Intro() {
     audio.volume = 0.4;
     audio.preload = "auto";
     clickSound.current = audio;
+
+    const followedSession = sessionStorage.getItem("followed");
+    if (followedSession === "true") setFollowed(true);
   }, []);
 
-  // AUTO SCROLL DEMO (BAJA Y SUBE)
   useEffect(() => {
     if (showModal && scrollRef.current) {
       const el = scrollRef.current;
@@ -38,6 +41,21 @@ export default function Intro() {
     if (!clickSound.current) return;
     clickSound.current.currentTime = 0;
     clickSound.current.play();
+  };
+
+  const handleFollow = () => {
+    playClick();
+
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      window.location.href = "instagram://user?username=rancheros.llanos";
+    } else {
+      window.open("https://www.instagram.com/rancheros.llanos/", "_blank");
+    }
+
+    setFollowed(true);
+    sessionStorage.setItem("followed", "true");
   };
 
   return (
@@ -106,7 +124,7 @@ export default function Intro() {
         </motion.h1>
 
         <p style={styles.text}>
-          Rompe el chocolate y descubre el premio que te espera
+          Rompe el chocolate y prueba tu suerte
         </p>
 
         <div style={styles.termsBox}>
@@ -126,17 +144,32 @@ export default function Intro() {
           </label>
         </div>
 
+        {/* BOTÓN INSTAGRAM */}
         <motion.button
-          disabled={!accepted}
+          onClick={handleFollow}
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          style={{
+            ...styles.instaButton,
+            background: followed ? "#fffb012c" : "#4d3800",
+            color: followed ? "#000000" : "#ffffff",
+            border: followed ? "1px solid #fffb01" : "1px solid #4d3800"
+          }}
+        >
+          {followed ? "✔ Cuenta seguida" : "Seguir en Instagram"}
+        </motion.button>
+
+        <motion.button
+          disabled={!(accepted && followed)}
           onClick={() => {
             playClick();
             router.push("/game");
           }}
           whileTap={{ scale: 0.95 }}
-          whileHover={{ scale: accepted ? 1.05 : 1 }}
+          whileHover={{ scale: accepted && followed ? 1.05 : 1 }}
           style={{
             ...styles.button,
-            opacity: accepted ? 1 : 0.5
+            opacity: accepted && followed ? 1 : 0.5
           }}
         >
           JUGAR AHORA
@@ -145,10 +178,10 @@ export default function Intro() {
         <p
           style={{
             ...styles.warning,
-            visibility: accepted ? "hidden" : "visible"
+            visibility: accepted && followed ? "hidden" : "visible"
           }}
         >
-          Debes aceptar para continuar
+          Debes aceptar y seguir en Instagram
         </p>
 
       </motion.div>
@@ -158,7 +191,6 @@ export default function Intro() {
           <div style={styles.modal}>
 
             <div ref={scrollRef} style={styles.modalContent}>
-              {/* AQUÍ SE APLICA EL SCROLL */}
 
               <h3 style={styles.modalTitle}>Condiciones</h3>
 
@@ -207,7 +239,6 @@ export default function Intro() {
         </div>
       )}
 
-      {/* SCROLL CAFÉ */}
       <style jsx global>{`
         ::-webkit-scrollbar {
           width: 6px;
@@ -251,7 +282,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   floating1: {
     position: "absolute",
-    top: "10%",
+    top: "5%",
     left: "10%",
     fontSize: "40px",
     opacity: 0.8,
@@ -260,7 +291,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   floating2: {
     position: "absolute",
-    bottom: "10%",
+    bottom: "5%",
     right: "10%",
     fontSize: "40px",
     opacity: 0.8,
@@ -292,7 +323,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   text: {
     fontSize: "clamp(15px, 4vw, 18px)",
     color: "#000000",
-    marginBottom: "15px"
+    marginBottom: "25px"
   },
 
   termsBox: {
@@ -303,13 +334,22 @@ const styles: { [key: string]: React.CSSProperties } = {
     border: "1px solid #fffb01"
   },
 
+  instaButton: {
+    width: "100%",
+    padding: "10px",
+    borderRadius: "15px",
+    fontSize: "15px",
+    cursor: "pointer",
+    marginBottom: "25px"
+  },
+
   termsLabel: {
     fontSize: "15px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     gap: "10px",
-    color: "#494949"
+    color: "#000000"
   },
 
   checkbox: {
@@ -333,7 +373,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   warning: {
     fontSize: "15px",
-    color: "#7a7a7a",
+    color: "#565656",
     marginTop: "10px",
     height: "16px"
   },

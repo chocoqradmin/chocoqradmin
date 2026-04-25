@@ -110,11 +110,11 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   iconBox: {
     fontSize: "60px",
-    marginBottom: "15px"
+    marginBottom: "10px"
   },
 
   title: {
-    fontSize: "22px",
+    fontSize: "20px",
     fontWeight: "900",
     marginBottom: "15px",
     color: "#4d3800"

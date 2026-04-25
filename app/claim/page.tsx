@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 export default function Claim() {
-  const [followed, setFollowed] = useState(false);
   const [redeemed, setRedeemed] = useState(false);
   const [prize, setPrize] = useState<{ name: string }>({ name: "Cargando..." });
 
@@ -17,10 +16,7 @@ export default function Claim() {
       setPrize({ name: parsed.prize?.name || "Premio especial" });
     }
 
-    const followedSession = sessionStorage.getItem("followed");
     const redeemedSession = sessionStorage.getItem("redeemed");
-
-    if (followedSession === "true") setFollowed(true);
     if (redeemedSession === "true") setRedeemed(true);
 
     clickAudio.current = new Audio("/sounds/click.mp3");
@@ -32,21 +28,6 @@ export default function Claim() {
     clickAudio.current.currentTime = 0;
     clickAudio.current.volume = 0.4;
     clickAudio.current.play();
-  };
-
-  const handleFollow = () => {
-    playClick();
-
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-    if (isMobile) {
-      window.location.href = "instagram://user?username=rancheros.llanos";
-    } else {
-      window.open("https://www.instagram.com/rancheros.llanos/", "_blank");
-    }
-
-    setFollowed(true);
-    sessionStorage.setItem("followed", "true");
   };
 
   const handleRedeem = () => {
@@ -136,30 +117,12 @@ export default function Claim() {
           {prize.name}
         </div>
 
+        {/* PASO */}
         <div style={styles.step}>
-          <span style={styles.stepNumber}>1</span>
-          <p style={styles.stepText}>Sigue nuestra cuenta</p>
+          <p style={styles.stepText}>Muestra este premio en caja:</p>
         </div>
 
         <motion.button
-          onClick={handleFollow}
-          whileTap={{ scale: 0.95 }}
-          whileHover={{ scale: 1.05 }}
-          style={{
-            ...styles.instaButton,
-            background: followed ? "#00c851" : "#000000"
-          }}
-        >
-          {followed ? "✔ Cuenta seguida" : "Seguir en Instagram"}
-        </motion.button>
-
-        <div style={styles.step}>
-          <span style={styles.stepNumber}>2</span>
-          <p style={styles.stepText}>Muestra este premio en caja</p>
-        </div>
-
-        <motion.button
-          // 🔥 SOLO CAMBIO: ya no está disabled
           whileTap={{ scale: 0.95 }}
           whileHover={{ scale: 1.05 }}
           onClick={handleRedeem}
@@ -172,14 +135,13 @@ export default function Claim() {
         </motion.button>
 
         <motion.button
-          // 🔥 SOLO CAMBIO: depende de ambos
-          disabled={!(followed && redeemed)}
+          disabled={!redeemed}
           whileTap={{ scale: 0.95 }}
           whileHover={{ scale: 1 }}
           onClick={handleContinue}
           style={{
             ...styles.finalButton,
-            opacity: followed && redeemed ? 1 : 0.5
+            opacity: redeemed ? 1 : 0.5
           }}
         >
           CONTINUAR
@@ -222,7 +184,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   floating1: {
     position: "absolute",
-    top: "6%",
+    top: "5%",
     left: "10%",
     fontSize: "40px",
     zIndex: 2
@@ -230,7 +192,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   floating2: {
     position: "absolute",
-    bottom: "6%",
+    bottom: "5%",
     right: "10%",
     fontSize: "40px",
     zIndex: 2
@@ -239,7 +201,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   card: {
     width: "100%",
     maxWidth: "400px",
-    background: "rgba(255,255,255,0.9)",
+    background: "rgba(255,255,255,0.95)",
     borderRadius: "30px",
     padding: "30px",
     textAlign: "center",
@@ -259,13 +221,13 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   subtitle: {
-    fontSize: "12px",
+    fontSize: "15px",
     color: "#000000",
     marginBottom: "10px"
   },
 
   prizeBox: {
-    fontSize: "12px",
+    fontSize: "15px",
     fontWeight: "bold",
     marginBottom: "15px",
     padding: "12px",
@@ -283,33 +245,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: "8px"
   },
 
-  stepNumber: {
-    background: "#000000",
-    color: "#fff",
-    borderRadius: "50%",
-    width: "18px",
-    height: "18px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "12px",
-    fontWeight: "bold"
-  },
-
   stepText: {
-    fontSize: "12px",
+    fontSize: "15px",
     color: "#000000"
-  },
-
-  instaButton: {
-    width: "100%",
-    padding: "10px",
-    borderRadius: "50px",
-    border: "none",
-    color: "#fff",
-    fontWeight: "bold",
-    marginBottom: "10px",
-    cursor: "pointer"
   },
 
   claimButton: {
@@ -356,7 +294,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     paddingLeft: "12px",
     margin: 0,
     fontSize: "14px",
-    color: "#555",
+    color: "#000000",
     lineHeight: "1"
   }
 };

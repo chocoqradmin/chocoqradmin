@@ -8,7 +8,6 @@ export default function Thanks() {
 
   const router = useRouter();
 
-  // 🔊 AUDIOS SIN RETRASO
   const clickAudio = useRef<HTMLAudioElement | null>(null);
   const winAudio = useRef<HTMLAudioElement | null>(null);
 
@@ -18,7 +17,6 @@ export default function Thanks() {
     clickAudio.current.preload = "auto";
     clickAudio.current.volume = 0.4;
 
-    // 🔥 SONIDO WIN
     winAudio.current = new Audio("/sounds/win.mp3");
     winAudio.current.preload = "auto";
     winAudio.current.volume = 0.5;
@@ -28,7 +26,6 @@ export default function Thanks() {
     if (!confettiShown) {
       setTimeout(() => {
 
-        // 🔥 SONIDO + CONFETTI JUNTOS
         if (winAudio.current) {
           winAudio.current.currentTime = 0;
           winAudio.current.play();
@@ -64,7 +61,6 @@ export default function Thanks() {
     router.push("/end");
   };
 
-  // 🔁 VOLVER A CLAIM
   const handleBackToClaim = () => {
     playClick();
     router.push("/claim");
@@ -119,13 +115,9 @@ export default function Thanks() {
         style={styles.card}
       >
 
-        <motion.div
-          style={styles.iconBox}
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
+        <div style={styles.iconBox}>
           🎁
-        </motion.div>
+        </div>
 
         <h1 style={styles.title}>
           <>
@@ -134,24 +126,11 @@ export default function Thanks() {
           </>
         </h1>
 
-        <p style={styles.text}>
-          Disfruta tu premio
-        </p>
-
         <p style={styles.subtext}>
           ¡Te esperamos pronto para más <br /> sorpresas!
         </p>
 
-        <motion.button
-          onClick={handleFinish}
-          whileTap={{ scale: 0.95 }}
-          whileHover={{ scale: 1.05 }}
-          style={styles.button}
-        >
-          FINALIZAR
-        </motion.button>
-
-        {/* 🔥 BOTÓN SECUNDARIO */}
+        {/* 🔥 BOTÓN VER PREMIO ARRIBA */}
         <motion.button
           onClick={handleBackToClaim}
           whileTap={{ scale: 0.95 }}
@@ -159,6 +138,16 @@ export default function Thanks() {
           style={styles.secondaryButton}
         >
           Ver premio
+        </motion.button>
+
+        {/* 🔥 FINALIZAR ABAJO */}
+        <motion.button
+          onClick={handleFinish}
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          style={styles.button}
+        >
+          FINALIZAR
         </motion.button>
 
       </motion.div>
@@ -227,13 +216,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: "#4d3800"
   },
 
-  text: {
-    fontSize: "15px",
-    fontWeight: "900",
-    marginBottom: "10px",
-    color: "#000000"
-  },
-
   subtext: {
     fontSize: "15px",
     color: "#000000",
@@ -253,16 +235,18 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: "10px"
   },
 
-  // 🔥 BOTÓN SECUNDARIO PRO
+  // Boton Ver Premio
+
   secondaryButton: {
     width: "100%",
-    padding: "12px",
-    borderRadius: "50px",
+    padding: "10px",
+    borderRadius: "15px", // menos redondeado
     border: "2px solid #4d3800",
     background: "transparent",
     color: "#4d3800",
-    fontSize: "14px",
+    fontSize: "15px",
     fontWeight: "bold",
-    cursor: "pointer"
+    cursor: "pointer",
+    marginBottom: "25px"
   }
 };
